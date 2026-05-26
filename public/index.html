@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haqdar AI - Government Scheme Discovery Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
@@ -272,6 +273,24 @@
                             <div id="btnSpinner" class="spinner hidden"></div>
                         </button>
                     </form>
+
+                    <!-- Dynamic Eligibility Insights Graph Section -->
+                    <div id="graphSection" class="mt-8 hidden">
+                        <div class="bg-gradient-to-br from-white to-indigo-50 rounded-3xl shadow-2xl p-8 border border-indigo-100 transform hover:scale-[1.02] transition-all duration-300">
+                            <div class="text-center mb-6">
+                                <h3 class="text-2xl font-bold text-indigo-900 mb-2">📊 Your Scheme Eligibility Insights</h3>
+                                <p class="text-gray-500 text-sm">Visual breakdown of your eligibility match</p>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <div class="w-full max-w-md">
+                                    <canvas id="eligibilityChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="text-center mt-6">
+                                <p id="graphScoreText" class="text-3xl font-bold text-indigo-900"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -570,6 +589,21 @@
             resultsContainer.classList.remove('hidden');
 
             if (data.schemes && data.schemes.length > 0) {
+                // Calculate dynamic eligibility score based on number of matching schemes
+                const numberOfSchemes = data.schemes.length;
+                let eligibilityScore = 75; // Base score
+
+                // Increase score based on number of schemes
+                if (numberOfSchemes >= 3) {
+                    eligibilityScore = 95;
+                } else if (numberOfSchemes === 2) {
+                    eligibilityScore = 85;
+                } else if (numberOfSchemes === 1) {
+                    eligibilityScore = 75;
+                }
+
+                // Show the eligibility graph with calculated score
+                showEligibilityGraph(eligibilityScore);
                 resultsContainer.innerHTML = data.schemes.map(scheme => `
                     <div class="bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 transform hover:scale-[1.02] transition-all duration-300">
                         <div class="flex items-start justify-between mb-4">
@@ -617,6 +651,9 @@
                     </div>
                 `).join('');
             } else {
+                // Show graph with low score when no schemes match
+                showEligibilityGraph(25);
+                
                 resultsContainer.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-[450px] text-center">
                         <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 float-animation">
@@ -629,6 +666,82 @@
                     </div>
                 `;
             }
+        }
+
+        // Global chart instance variable
+        let myChart = null;
+
+        // Dynamic Eligibility Graph Function
+        function showEligibilityGraph(score) {
+            // Show the graph section
+            const graphSection = document.getElementById('graphSection');
+            graphSection.classList.remove('hidden');
+
+            // Update score text
+            const graphScoreText = document.getElementById('graphScoreText');
+            graphScoreText.textContent = `Match Score: ${score}%`;
+            graphScoreText.className = 'text-3xl font-bold text-indigo-900';
+
+            // Destroy previous chart instance if exists
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            // Get canvas context
+            const ctx = document.getElementById('eligibilityChart').getContext('2d');
+
+            // Create new Doughnut chart
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Match Probability', 'Risk Factor'],
+                    datasets: [{
+                        data: [score, 100 - score],
+                        backgroundColor: [
+                            '#10B981', // Green for match probability
+                            '#EF4444'  // Red for risk factor
+                        ],
+                        borderColor: [
+                            '#059669', // Darker green border
+                            '#DC2626'  // Darker red border
+                        ],
+                        borderWidth: 2,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%', // Makes it a thinner doughnut
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
         }
 
         function downloadCertificate(schemeTitle) {
