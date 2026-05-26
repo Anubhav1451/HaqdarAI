@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haqdar AI - Government Scheme Discovery Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes chat-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); }
+        }
+        .chat-pulse {
+            animation: chat-pulse 2s infinite;
+        }
+        @keyframes slide-up {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .slide-up {
+            animation: slide-up 0.3s ease-out;
+        }
+        .chat-message {
+            animation: slide-up 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-blue-50 min-h-screen">
+    <!-- Header with Tricolor Line -->
+    <header class="bg-white shadow-lg">
+        <div class="h-1 bg-gradient-to-r from-orange-500 via-white to-green-500"></div>
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-white text-2xl font-bold">H</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-indigo-900">Haqdar AI</h1>
+                        <p class="text-sm text-gray-500">Government Scheme Discovery Platform</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-2">
+                    <span class="text-xs text-gray-400">Powered by</span>
+                    <span class="text-sm font-semibold text-indigo-600">AI Technology</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content - Two Column Layout -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Analytics Dashboard -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-indigo-900 mb-6">📊 Live Analytics</h2>
+            
+            <!-- Stat Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Total Users Checked -->
+                <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-green-400 text-green-900 text-xs font-bold px-3 py-1 rounded-full">+Live</span>
+                    </div>
+                    <p class="text-indigo-100 text-sm mb-1">Total Users Checked</p>
+                    <p id="totalUsers" class="text-4xl font-bold">0</p>
+                </div>
+
+                <!-- Matching Success Rate -->
+                <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-white/30 text-white text-xs font-bold px-3 py-1 rounded-full">High</span>
+                    </div>
+                    <p class="text-green-100 text-sm mb-1">Matching Success Rate</p>
+                    <p class="text-4xl font-bold">84%</p>
+                </div>
+
+                <!-- Top Demanded Scheme -->
+                <div class="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">🔥 Hot</span>
+                    </div>
+                    <p class="text-orange-100 text-sm mb-1">Top Demanded Scheme</p>
+                    <p class="text-xl font-bold">Post-Matric Scholarship</p>
+                </div>
+            </div>
+
+            <!-- Popular Schemes Chart -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                <h3 class="text-xl font-bold text-indigo-900 mb-6">📈 Popular Schemes</h3>
+                <div class="space-y-4">
+                    <!-- PM Kisan -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-700">PM Kisan</span>
+                            <span class="text-sm font-bold text-indigo-600">65%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-3 rounded-full transition-all duration-1000" style="width: 65%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Post-Matric Scholarship -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-700">Post-Matric Scholarship</span>
+                            <span class="text-sm font-bold text-green-600">45%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-1000" style="width: 45%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Mudra Yojana -->
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-gray-700">Mudra Yojana</span>
+                            <span class="text-sm font-bold text-orange-600">30%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-orange-500 to-red-500 h-3 rounded-full transition-all duration-1000" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left Column - Form -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100 pulse-glow">
+                    <div class="mb-6">
+                        <h2 class="text-3xl font-bold text-indigo-900 mb-2">Check Eligibility</h2>
+                        <p class="text-gray-500">Enter your details to discover government schemes</p>
+                    </div>
+
+                    <form id="eligibilityForm" class="space-y-5">
+                        <!-- Age -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Age</label>
+                            <input type="number" id="age" name="age" required min="0" max="100"
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300"
+                                placeholder="Enter your age">
+                        </div>
+
+                        <!-- Annual Income -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Annual Income (₹)</label>
+                            <input type="number" id="annualIncome" name="annualIncome" required min="0"
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300"
+                                placeholder="Enter your annual income">
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
+                            <select id="gender" name="gender" required
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Caste -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Caste</label>
+                            <select id="caste" name="caste" required
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300">
+                                <option value="">Select Caste</option>
+                                <option value="General">General</option>
+                                <option value="OBC">OBC</option>
+                                <option value="SC">SC</option>
+                                <option value="ST">ST</option>
+                            </select>
+                        </div>
+
+                        <!-- State -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">State</label>
+                            <select id="state" name="state" required
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300">
+                                <option value="">Select State</option>
+                                <option value="All">All States</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                            </select>
+                        </div>
+
+                        <!-- Occupation -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Occupation</label>
+                            <select id="occupation" name="occupation" required
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300">
+                                <option value="">Select Occupation</option>
+                                <option value="Student">Student</option>
+                                <option value="Farmer">Farmer</option>
+                                <option value="Business">Business</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submitBtn"
+                            class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold py-4 px-6 rounded-2xl hover:from-indigo-700 hover:to-blue-700 transform hover:scale-[1.02] transition-all duration-300 shadow-xl flex items-center justify-center space-x-2">
+                            <span id="btnText">Check Eligibility</span>
+                            <div id="btnSpinner" class="spinner hidden"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column - Results -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100 min-h-[600px]">
+                    <div class="mb-6">
+                        <h2 class="text-3xl font-bold text-indigo-900 mb-2">Eligible Schemes</h2>
+                        <p class="text-gray-500">Your personalized government benefits</p>
+                    </div>
+
+                    <!-- Placeholder -->
+                    <div id="placeholder" class="flex flex-col items-center justify-center h-[450px] text-center">
+                        <div class="w-24 h-24 bg-gradient-to-br from-indigo-100 to-blue-100 rounded-full flex items-center justify-center mb-6 float-animation">
+                            <svg class="w-12 h-12 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Enter your details</h3>
+                        <p class="text-gray-500 max-w-xs">Fill in the form on the left to discover your eligible government schemes</p>
+                    </div>
+
+                    <!-- Results Container -->
+                    <div id="resultsContainer" class="space-y-6 hidden">
+                        <!-- Dynamic cards will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-indigo-900 to-blue-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-indigo-200">© 2026 Haqdar AI - Government Scheme Discovery Platform</p>
+            <p class="text-sm text-indigo-300 mt-2">Empowering Citizens with AI</p>
+        </div>
+    </footer>
+
+    <!-- Floating Chat Widget -->
+    <div id="chatWidget" class="fixed bottom-6 right-6 z-50">
+        <!-- Chat Window -->
+        <div id="chatWindow" class="hidden mb-4 w-80 md:w-96 bg-white rounded-2xl shadow-2xl overflow-hidden slide-up">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-indigo-600 to-blue-600 p-4 text-white">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Haqdar AI Assistant</h3>
+                            <p class="text-xs text-indigo-200">Online • Ready to help</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleChat()" class="text-white hover:text-indigo-200 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chatMessages" class="h-80 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                <!-- Messages will be inserted here -->
+            </div>
+
+            <!-- Quick Options -->
+            <div id="quickOptions" class="p-4 bg-white border-t border-gray-100">
+                <p class="text-xs text-gray-500 mb-3">Quick Options:</p>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="sendQuickOption('student')" class="bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200 transition">
+                        🎓 Main Student Hoon
+                    </button>
+                    <button onclick="sendQuickOption('kisan')" class="bg-green-100 text-green-700 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-green-200 transition">
+                        🌾 Main Kisan Hoon
+                    </button>
+                    <button onclick="sendQuickOption('business')" class="bg-orange-100 text-orange-700 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-orange-200 transition">
+                        💼 Main Business Karta Hoon
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="p-4 bg-white border-t border-gray-100">
+                <div class="flex space-x-2">
+                    <input type="text" id="chatInput" placeholder="Type your message..." 
+                        class="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                        onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button onclick="sendMessage()" class="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Chat Button -->
+        <button onclick="toggleChat()" id="chatButton" class="chat-pulse w-16 h-16 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-full shadow-2xl flex items-center justify-center text-white hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-110">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        const form = document.getElementById('eligibilityForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const placeholder = document.getElementById('placeholder');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const totalUsersElement = document.getElementById('totalUsers');
+        let currentUserData = null;
+        let totalUsersChecked = 0;
+
+        // Count-up animation on load
+        function animateCounter(targetNumber, duration) {
+            const startNumber = 0;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function for smooth animation
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const currentNumber = Math.floor(startNumber + (targetNumber - startNumber) * easeOutQuart);
+                
+                totalUsersElement.textContent = currentNumber.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    totalUsersChecked = targetNumber;
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        // Initialize counter animation on page load
+        window.addEventListener('load', () => {
+            const initialTarget = Math.floor(Math.random() * 200) + 400; // Random number between 400-600
+            animateCounter(initialTarget, 1200); // 1.2 second animation
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.textContent = 'Checking Eligibility...';
+            btnSpinner.classList.remove('hidden');
+            submitBtn.classList.add('opacity-80');
+
+            // Get form data
+            const formData = {
+                age: parseInt(document.getElementById('age').value),
+                annualIncome: parseInt(document.getElementById('annualIncome').value),
+                gender: document.getElementById('gender').value,
+                caste: document.getElementById('caste').value,
+                state: document.getElementById('state').value,
+                occupation: document.getElementById('occupation').value
+            };
+
+            // Store user data for certificate
+            currentUserData = formData;
+
+            // Increment total users counter (form submission boost)
+            totalUsersChecked++;
+            totalUsersElement.textContent = totalUsersChecked.toLocaleString();
+            totalUsersElement.classList.add('scale-125');
+            setTimeout(() => {
+                totalUsersElement.classList.remove('scale-125');
+            }, 300);
+
+            try {
+                const response = await fetch('http://localhost:5000/api/schemes/match', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                placeholder.classList.remove('hidden');
+                resultsContainer.classList.add('hidden');
+                placeholder.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-[450px] text-center">
+                        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6">
+                            <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-red-600 mb-2">Connection Error</h3>
+                        <p class="text-gray-500 max-w-xs">Please ensure the server is running and try again</p>
+                    </div>
+                `;
+            } finally {
+                // Reset button
+                submitBtn.disabled = false;
+                btnText.textContent = 'Check Eligibility';
+                btnSpinner.classList.add('hidden');
+                submitBtn.classList.remove('opacity-80');
+            }
+        });
+
+        function displayResults(data) {
+            placeholder.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+
+            if (data.schemes && data.schemes.length > 0) {
+                resultsContainer.innerHTML = data.schemes.map(scheme => `
+                    <div class="bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 transform hover:scale-[1.02] transition-all duration-300">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-indigo-900">${scheme.title}</h3>
+                            <span class="bg-green-100 text-green-700 text-sm font-bold px-4 py-2 rounded-full flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Eligible</span>
+                            </span>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">${scheme.description}</p>
+                        
+                        <!-- Benefits Box -->
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-5 shadow-md border border-green-200 mb-4">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                                <p class="text-sm font-bold text-green-800">Benefits</p>
+                            </div>
+                            <p class="text-gray-700 font-medium">${scheme.benefits}</p>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 text-xs mb-4">
+                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg font-semibold">
+                                Age: ${scheme.minAge}-${scheme.maxAge}
+                            </span>
+                            <span class="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg font-semibold">
+                                Max Income: ₹${scheme.maxIncome?.toLocaleString() || 'N/A'}
+                            </span>
+                            <span class="bg-purple-100 text-purple-700 px-3 py-1.5 rounded-lg font-semibold">
+                                ${scheme.occupation}
+                            </span>
+                        </div>
+
+                        <!-- Download Button -->
+                        <button onclick="downloadCertificate('${scheme.title}')" 
+                            class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-3 px-6 rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            <span>📥 Download Eligibility Pass</span>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-[450px] text-center">
+                        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 float-animation">
+                            <svg class="w-12 h-12 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-yellow-600 mb-2">No Matching Schemes</h3>
+                        <p class="text-gray-500 max-w-xs">Try adjusting your criteria to find eligible schemes</p>
+                    </div>
+                `;
+            }
+        }
+
+        function downloadCertificate(schemeTitle) {
+            if (!currentUserData) {
+                alert('Please fill the form first to generate certificate');
+                return;
+            }
+
+            const certificateWindow = window.open('', '_blank');
+            const currentDate = new Date().toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            certificateWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Haqdar AI - Eligibility Certificate</title>
+                    <style>
+                        @media print {
+                            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                            .no-print { display: none !important; }
+                        }
+                        body {
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            margin: 0;
+                            padding: 40px;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        }
+                        .certificate {
+                            background: white;
+                            max-width: 800px;
+                            margin: 0 auto;
+                            padding: 60px;
+                            border-radius: 20px;
+                            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                        }
+                        .header {
+                            text-align: center;
+                            border-bottom: 4px solid #667eea;
+                            padding-bottom: 30px;
+                            margin-bottom: 40px;
+                        }
+                        .logo {
+                            font-size: 48px;
+                            font-weight: bold;
+                            color: #667eea;
+                            margin-bottom: 10px;
+                        }
+                        .subtitle {
+                            font-size: 18px;
+                            color: #666;
+                            letter-spacing: 2px;
+                        }
+                        .title {
+                            text-align: center;
+                            font-size: 32px;
+                            font-weight: bold;
+                            color: #333;
+                            margin: 40px 0;
+                            text-transform: uppercase;
+                        }
+                        .content {
+                            margin: 40px 0;
+                        }
+                        .section {
+                            margin: 25px 0;
+                        }
+                        .label {
+                            font-size: 14px;
+                            color: #888;
+                            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .value {
+            font-size: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+        .status-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        .status-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .status-scheme {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+        .signature {
+            text-align: center;
+        }
+        .signature-line {
+            border-top: 2px solid #333;
+            width: 200px;
+            margin: 20px auto 10px;
+        }
+        .stamp {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #667eea;
+            font-weight: bold;
+            transform: rotate(-15deg);
+            margin: 0 auto;
+        }
+        .print-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+        }
+        .print-btn:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="header">
+            <div class="logo">🇮🇳 Haqdar AI</div>
+            <div class="subtitle">GOVERNMENT SCHEME DISCOVERY PLATFORM</div>
+        </div>
+
+        <div class="title">Eligibility Certificate</div>
+
+        <div class="content">
+            <div class="section">
+                <div class="label">Applicant Details</div>
+                <div class="value">Age: ${currentUserData.age} years</div>
+            </div>
+            <div class="section">
+                <div class="label">Annual Income</div>
+                <div class="value">₹${currentUserData.annualIncome.toLocaleString()}</div>
+            </div>
+            <div class="section">
+                <div class="label">Category</div>
+                <div class="value">${currentUserData.caste}</div>
+            </div>
+            <div class="section">
+                <div class="label">State</div>
+                <div class="value">${currentUserData.state}</div>
+            </div>
+            <div class="section">
+                <div class="label">Gender</div>
+                <div class="value">${currentUserData.gender}</div>
+            </div>
+            <div class="section">
+                <div class="label">Occupation</div>
+                <div class="value">${currentUserData.occupation}</div>
+            </div>
+        </div>
+
+        <div class="status-box">
+            <div class="status-title">Status</div>
+            <div class="status-scheme">✓ Provisionally Eligible for</div>
+            <div class="status-scheme" style="margin-top: 10px;">${schemeTitle}</div>
+        </div>
+
+        <div class="footer">
+            <div class="signature">
+                <div class="signature-line"></div>
+                <div style="font-size: 14px; color: #666;">Authorized Signature</div>
+            </div>
+            <div class="signature">
+                <div class="stamp">APPROVED</div>
+            </div>
+            <div class="signature">
+                <div class="signature-line"></div>
+                <div style="font-size: 14px; color: #666;">Date: ${currentDate}</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="print-btn no-print" onclick="window.print()">📥 Download as PDF</button>
+</body>
+</html>
+            `);
+            certificateWindow.document.close();
+        }
+
+        // Chat Widget Functions
+        const chatWindow = document.getElementById('chatWindow');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        let isFirstOpen = true;
+
+        function toggleChat() {
+            chatWindow.classList.toggle('hidden');
+            if (!chatWindow.classList.contains('hidden') && isFirstOpen) {
+                // Show welcome message on first open
+                setTimeout(() => {
+                    addBotMessage('Namaste! 🙏 Main hoon Haqdar AI. Main aapko sahi sarkari yojana dhoondhne mein madad karunga. Aap kya karte hain?');
+                }, 300);
+                isFirstOpen = false;
+            }
+        }
+
+        function addBotMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message flex justify-start';
+            messageDiv.innerHTML = `
+                <div class="bg-gradient-to-r from-indigo-100 to-blue-100 rounded-2xl rounded-tl-none p-3 max-w-[80%]">
+                    <p class="text-sm text-gray-800">${message}</p>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message flex justify-end';
+            messageDiv.innerHTML = `
+                <div class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl rounded-tr-none p-3 max-w-[80%]">
+                    <p class="text-sm text-white">${message}</p>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendQuickOption(option) {
+            let userMessage = '';
+            let botResponse = '';
+
+            switch(option) {
+                case 'student':
+                    userMessage = 'Main Student Hoon 🎓';
+                    botResponse = 'Wah! 🎉 Students ke liye hamare paas <strong>Post-Matric Scholarship Scheme</strong> hai. Kya aapki annual income ₹2,50,000 se kam hai aur caste SC/ST hai? Agar haan, toh left side ke form mein details bharkar apna PDF Pass download karein!';
+                    break;
+                case 'kisan':
+                    userMessage = 'Main Kisan Hoon 🌾';
+                    botResponse = 'Bahut accha! 🌾 Kisanon ke liye hamare paas <strong>PM Kisan Samman Nidhi</strong> hai. Yeh scheme ₹3 lakh se kam annual income wale farmers ke liye hai. Form mein apni details bharein aur ₹6,000 yearly benefit ka PDF pass download karein!';
+                    break;
+                case 'business':
+                    userMessage = 'Main Business Karta Hoon 💼';
+                    botResponse = 'Shabash! 💼 Business owners ke liye hamare paas <strong>Mudra Yojana</strong> hai. Yeh scheme ₹10 lakh tak ka loan provide karti hai. Form mein apni details bharein aur business growth ke liye eligibility check karein!';
+                    break;
+            }
+
+            addUserMessage(userMessage);
+            setTimeout(() => {
+                addBotMessage(botResponse);
+            }, 500);
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                chatInput.value = '';
+
+                // Simple bot response for custom messages
+                setTimeout(() => {
+                    addBotMessage('Main aapki madad karne ke liye ready hoon! Quick options se select karein ya form mein apni details bharein.');
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>
