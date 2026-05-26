@@ -174,6 +174,24 @@
                     </div>
 
                     <form id="eligibilityForm" class="space-y-5">
+                        <!-- Full Name -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name (As per Aadhaar/Document)</label>
+                            <input type="text" id="fullName" name="fullName" required
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300"
+                                placeholder="Enter your full name">
+                        </div>
+
+                        <!-- Aadhaar Card / ID Proof Upload -->
+                        <div class="group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Aadhaar Card / ID Proof (JPG/PNG)</label>
+                            <input type="file" id="documentUpload" name="documentUpload" accept=".jpg,.jpeg,.png" required
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 group-hover:border-indigo-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            <div id="validationStatus" class="mt-3 p-3 rounded-xl text-sm font-semibold hidden items-center justify-center space-x-2">
+                                <!-- Dynamic content here -->
+                            </div>
+                        </div>
+
                         <!-- Age -->
                         <div class="group">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Age</label>
@@ -293,6 +311,9 @@
         </div>
     </footer>
 
+    <!-- Tesseract.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
     <!-- Floating Chat Widget -->
     <div id="chatWidget" class="fixed bottom-6 right-6 z-50">
         <!-- Chat Window -->
@@ -373,6 +394,80 @@
         const totalUsersElement = document.getElementById('totalUsers');
         let currentUserData = null;
         let totalUsersChecked = 0;
+        const fullNameInput = document.getElementById("fullName");
+        const documentUploadInput = document.getElementById("documentUpload");
+        const validationStatus = document.getElementById("validationStatus");
+        let isDocumentVerified = false;
+
+        // Function to update validation status UI
+        function updateValidationStatus(message, type) {
+            validationStatus.classList.remove("hidden", "bg-green-100", "text-green-700", "bg-red-100", "text-red-700", "bg-blue-100", "text-blue-700");
+            validationStatus.innerHTML = "";
+            submitBtn.disabled = true; // Disable submit button by default
+
+            if (type === "loading") {
+                validationStatus.classList.add("bg-blue-100", "text-blue-700", "flex");
+                validationStatus.innerHTML = `<div class="spinner mr-2"></div><span>${message}</span>`;
+            } else if (type === "success") {
+                validationStatus.classList.add("bg-green-100", "text-green-700", "flex");
+                validationStatus.innerHTML = `<svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span>${message}</span>`;
+                submitBtn.disabled = false; // Enable submit button on success
+                isDocumentVerified = true;
+            } else if (type === "error") {
+                validationStatus.classList.add("bg-red-100", "text-red-700", "flex");
+                validationStatus.innerHTML = `<svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg><span>${message}</span>`;
+                isDocumentVerified = false;
+            }
+            validationStatus.classList.remove("hidden");
+        }
+
+        // Event Listener for file upload
+        documentUploadInput.addEventListener("change", async (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            updateValidationStatus("AI Scanning Document... Reading Text (0%)", "loading");
+
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const image = reader.result; // Data URL of the image
+                try {
+                    const { data: { text } } = await Tesseract.recognize(
+                        image,
+                        "eng", // Language
+                        { 
+                            logger: m => {
+                                if (m.status === "recognizing") {
+                                    const progress = Math.round(m.progress * 100);
+                                    updateValidationStatus(`AI Scanning Document... Reading Text (${progress}%)`, "loading");
+                                }
+                            }
+                        }
+                    );
+
+                    const extractedText = text.toLowerCase();
+                    const userName = fullNameInput.value.toLowerCase();
+
+                    if (userName && extractedText.includes(userName)) {
+                        updateValidationStatus("Verification Successful: Name Matched with Document!", "success");
+                        submitBtn.disabled = false; // Enable the main submit button
+                    } else {
+                        updateValidationStatus("Verification Failed: Name mismatch or unclear document. Please try again.", "error");
+                        submitBtn.disabled = true; // Keep disabled
+                    }
+                } catch (error) {
+                    console.error("Tesseract.js Error:", error);
+                    updateValidationStatus("Error scanning document. Please try again.", "error");
+                    submitBtn.disabled = true; // Keep disabled on error
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Initially disable the submit button until document is verified
+        submitBtn.disabled = true;
 
         // Count-up animation on load
         function animateCounter(targetNumber, duration) {
