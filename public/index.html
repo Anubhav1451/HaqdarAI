@@ -49,9 +49,265 @@
         .chat-message {
             animation: slide-up 0.3s ease-out;
         }
+        
+        /* Matrix Hacker Styles */
+        @keyframes matrix-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), 
+                            0 0 40px rgba(0, 255, 0, 0.2),
+                            inset 0 0 20px rgba(0, 255, 0, 0.1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(0, 255, 0, 0.5), 
+                            0 0 60px rgba(0, 255, 0, 0.3),
+                            inset 0 0 30px rgba(0, 255, 0, 0.2);
+            }
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.8; }
+            94% { opacity: 1; }
+            95% { opacity: 0.9; }
+            96% { opacity: 1; }
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .hacker-overlay {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .matrix-text {
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            animation: flicker 3s infinite;
+        }
+        .hacker-input {
+            background: rgba(0, 20, 0, 0.8);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            animation: matrix-glow 2s infinite;
+        }
+        .hacker-input:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+        }
+        .hacker-button {
+            background: rgba(0, 50, 0, 0.9);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+        .hacker-button:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+        .scanline-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(0, 255, 0, 0.03),
+                transparent
+            );
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+        .access-denied {
+            animation: shake 0.5s ease-in-out;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .hacker-overlay {
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-50 via-white to-blue-50 min-h-screen">
+    <!-- Matrix Hacker Overlay (Secret Admin Access) -->
+    <div id="hackerOverlay" class="fixed inset-0 hacker-overlay z-50 hidden flex items-center justify-center transition-all duration-500 ease-in-out transform">
+        <div class="scanline-effect"></div>
+        <div class="text-center p-8 max-w-lg w-full">
+            <div id="hackerContent">
+                <h1 class="matrix-text text-3xl font-bold mb-6">⚠️ SYSTEM OVERRIDE DETECTED...</h1>
+                <p class="matrix-text text-lg mb-8">🛡️ ENTER SECURITY DECRYPTION TOKEN TO ACCESS CORE DASHBOARD:</p>
+                <input type="password" id="hackerPassword" placeholder="Enter decryption token..." 
+                    class="hacker-input w-full px-6 py-4 rounded-lg text-xl mb-6 placeholder-green-700">
+                <div id="hackerMessage" class="matrix-text text-xl mb-4 hidden"></div>
+                <button onclick="cancelAdminAccess()" class="hacker-button px-8 py-3 rounded-lg text-lg">
+                    ABORT ACCESS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Initially Hidden) -->
+    <div id="adminDashboard" class="hidden min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 transition-all duration-500 ease-in-out transform">
+        <div class="scanline-effect"></div>
+        <div class="container mx-auto px-6 py-8">
+            <!-- Admin Header -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg matrix-text">
+                        <span class="text-white text-2xl font-bold">A</span>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-green-400 matrix-text">ADMIN CORE DASHBOARD</h1>
+                        <p class="text-gray-400 text-sm">Matrix Security System • Level 5 Access</p>
+                    </div>
+                </div>
+                <button onclick="exitAdmin()" class="hacker-button px-6 py-3 rounded-lg text-lg">
+                    ⬅️ EXIT ADMIN
+                </button>
+            </div>
+
+            <!-- Admin Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Total Applications -->
+                <div class="bg-gradient-to-br from-blue-900/50 to-blue-800/30 border-2 border-blue-500 rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1 rounded-full">TOTAL</span>
+                    </div>
+                    <p class="text-blue-300 text-sm mb-1">Applications Received</p>
+                    <p class="text-4xl font-bold text-white">1,245</p>
+                    <p class="text-blue-400 text-xs mt-2">+12% this week</p>
+                </div>
+
+                <!-- Documents Verified -->
+                <div class="bg-gradient-to-br from-green-900/50 to-green-800/30 border-2 border-green-500 rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1 rounded-full">VERIFIED</span>
+                    </div>
+                    <p class="text-green-300 text-sm mb-1">Documents Successfully</p>
+                    <p class="text-4xl font-bold text-white">980</p>
+                    <p class="text-green-400 text-xs mt-2">Auto-approved</p>
+                </div>
+
+                <!-- Applications Rejected -->
+                <div class="bg-gradient-to-br from-red-900/50 to-red-800/30 border-2 border-red-500 rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-red-500/20 text-red-400 text-xs font-bold px-3 py-1 rounded-full">REJECTED</span>
+                    </div>
+                    <p class="text-red-300 text-sm mb-1">Applications Failed</p>
+                    <p class="text-4xl font-bold text-white">265</p>
+                    <p class="text-red-400 text-xs mt-2">Flagged by AI</p>
+                </div>
+            </div>
+
+            <!-- Recent Applicants Table -->
+            <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-bold text-green-400 mb-6 matrix-text">📊 Recent Applicants Status</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="text-left py-3 px-4 text-green-400 font-semibold">App ID</th>
+                                <th class="text-left py-3 px-4 text-green-400 font-semibold">Applicant Name</th>
+                                <th class="text-left py-3 px-4 text-green-400 font-semibold">State</th>
+                                <th class="text-left py-3 px-4 text-green-400 font-semibold">Income</th>
+                                <th class="text-left py-3 px-4 text-green-400 font-semibold">Status</th>
+                                <th class="text-left py-3 px-4 text-green-400 font-semibold">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-700 hover:bg-gray-700/50 transition-colors">
+                                <td class="py-4 px-4 text-gray-300 font-mono text-sm">#GOV-2026-089</td>
+                                <td class="py-4 px-4 text-white font-semibold">Amit Kumar</td>
+                                <td class="py-4 px-4 text-gray-300">Bihar</td>
+                                <td class="py-4 px-4 text-gray-300">₹1,20,000</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold border border-green-500">✅ Verified (Score: 94%)</span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-400 text-sm">2026-05-27</td>
+                            </tr>
+                            <tr class="border-b border-gray-700 hover:bg-gray-700/50 transition-colors">
+                                <td class="py-4 px-4 text-gray-300 font-mono text-sm">#GOV-2026-054</td>
+                                <td class="py-4 px-4 text-white font-semibold">Rahul Sharma</td>
+                                <td class="py-4 px-4 text-gray-300">Uttar Pradesh</td>
+                                <td class="py-4 px-4 text-gray-300">₹4,50,000</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm font-semibold border border-red-500">❌ Failed (Name Mismatch on Aadhaar)</span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-400 text-sm">2026-05-26</td>
+                            </tr>
+                            <tr class="border-b border-gray-700 hover:bg-gray-700/50 transition-colors">
+                                <td class="py-4 px-4 text-gray-300 font-mono text-sm">#GOV-2026-031</td>
+                                <td class="py-4 px-4 text-white font-semibold">Priyanka Singh</td>
+                                <td class="py-4 px-4 text-gray-300">Maharashtra</td>
+                                <td class="py-4 px-4 text-gray-300">₹95,000</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold border border-green-500">✅ Verified (Score: 88%)</span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-400 text-sm">2026-05-26</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="py-4 px-4 text-gray-300 font-mono text-sm">#GOV-2026-012</td>
+                                <td class="py-4 px-4 text-white font-semibold">Vikram Malhotra</td>
+                                <td class="py-4 px-4 text-gray-300">Delhi</td>
+                                <td class="py-4 px-4 text-gray-300">₹8,00,000</td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm font-semibold border border-red-500">❌ Failed (Income Exceeded Criteria)</span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-400 text-sm">2026-05-25</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Weekly Application Inflow Chart -->
+            <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-2xl p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-bold text-green-400 mb-6 matrix-text">📈 Weekly Application Inflow</h2>
+                <div class="w-full max-w-3xl mx-auto">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main User Content (Initially Visible) -->
+    <div id="userContent">
     <!-- Header with Tricolor Line -->
     <header class="bg-white shadow-lg">
         <div class="h-1 bg-gradient-to-r from-orange-500 via-white to-green-500"></div>
@@ -322,6 +578,174 @@
         </div>
     </main>
 
+    <!-- Futuristic Admin Unlock Overlay -->
+    <div id="adminUnlockOverlay" class="hidden fixed inset-0 z-[100] bg-black flex items-center justify-center">
+        <div class="text-center">
+            <div class="text-6xl mb-4 animate-pulse">🔓</div>
+            <h2 class="text-3xl font-bold text-green-400 mb-2">ACCESS GRANTED</h2>
+            <p class="text-xl text-green-300">INITIALIZING ADMIN PORTAL...</p>
+            <div class="mt-8 w-64 h-2 bg-gray-800 rounded-full mx-auto overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-green-400 to-emerald-500 animate-[loading_1s_ease-in-out_forwards]" style="width: 100%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Section (Hidden by default) -->
+    <div id="adminDashboard" class="hidden">
+        <main class="container mx-auto px-6 py-8">
+            <!-- Admin Header -->
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-indigo-900">🔐 Admin Dashboard</h2>
+                    <p class="text-gray-500">Monitor and manage applications</p>
+                </div>
+                <button onclick="exitAdmin()" class="bg-gradient-to-r from-red-600 to-rose-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-red-700 hover:to-rose-700 transition-all duration-300 shadow-lg flex items-center space-x-2">
+                    <span>🚪</span>
+                    <span>Exit Admin</span>
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Total Applications Received -->
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-white/30 text-white text-xs font-bold px-3 py-1 rounded-full">Total</span>
+                    </div>
+                    <p class="text-blue-100 text-sm mb-1">Total Applications Received</p>
+                    <p class="text-4xl font-bold">1,245</p>
+                </div>
+
+                <!-- Documents Successfully Verified -->
+                <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-white/30 text-white text-xs font-bold px-3 py-1 rounded-full">Verified</span>
+                    </div>
+                    <p class="text-green-100 text-sm mb-1">Documents Successfully Verified</p>
+                    <p class="text-4xl font-bold">980</p>
+                </div>
+
+                <!-- Applications Rejected/Failed -->
+                <div class="bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="bg-white/30 text-white text-xs font-bold px-3 py-1 rounded-full">Failed</span>
+                    </div>
+                    <p class="text-red-100 text-sm mb-1">Applications Rejected/Failed</p>
+                    <p class="text-4xl font-bold">265</p>
+                </div>
+            </div>
+
+            <!-- Live Application Table -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-indigo-900">📋 Recent Applicants Status</h3>
+                    <p class="text-gray-500 text-sm">Live tracking of document verification status</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-indigo-50 to-blue-50">
+                                <th class="px-6 py-4 text-left text-sm font-bold text-indigo-900 rounded-tl-xl">Serial No.</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-indigo-900">Applicant Name</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-indigo-900">Income</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-indigo-900">State</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-indigo-900">Document Status</th>
+                                <th class="px-6 py-4 text-left text-sm font-bold text-indigo-900 rounded-tr-xl">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-700">001</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-900">Amit Kumar</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">₹2,50,000</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">Delhi</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1 w-fit">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Verified</span>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold hover:bg-indigo-200 transition">View Details</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-700">002</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-900">Rahul Sharma</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">₹3,00,000</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">Maharashtra</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1 w-fit">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Failed</span>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="bg-red-100 text-red-700 px-3 py-1 rounded-lg text-xs font-semibold hover:bg-red-200 transition">Review</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-700">003</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-900">Priyanka Singh</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">₹1,80,000</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">Uttar Pradesh</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1 w-fit">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Verified</span>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold hover:bg-indigo-200 transition">View Details</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-700">004</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-900">Vikram Patel</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">₹4,50,000</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">Gujarat</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1 w-fit">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Verified</span>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold hover:bg-indigo-200 transition">View Details</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    </div> <!-- End of userContent -->
+
     <!-- Footer -->
     <footer class="bg-gradient-to-r from-indigo-900 to-blue-900 text-white py-8 mt-12">
         <div class="container mx-auto px-6 text-center">
@@ -487,6 +911,31 @@
 
         // Initially disable the submit button until document is verified
         submitBtn.disabled = true;
+
+        // Secret Hotkey: Ctrl + Shift + A to unlock Admin Dashboard
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                unlockAdminDashboard();
+            }
+        });
+
+        // Unlock Admin Dashboard with Animation
+        function unlockAdminDashboard() {
+            const overlay = document.getElementById('adminUnlockOverlay');
+            const mainContent = document.querySelector('main');
+            const adminDashboard = document.getElementById('adminDashboard');
+
+            // Show overlay animation
+            overlay.classList.remove('hidden');
+
+            // After 1 second, hide overlay and show admin dashboard
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                mainContent.classList.add('hidden');
+                adminDashboard.classList.remove('hidden');
+            }, 1000);
+        }
 
         // Count-up animation on load
         function animateCounter(targetNumber, duration) {
@@ -1027,6 +1476,259 @@
                     addBotMessage('Main aapki madad karne ke liye ready hoon! Quick options se select karein ya form mein apni details bharein.');
                 }, 500);
             }
+        }
+
+        // ===== MATRIX HACKER ADMIN PANEL LOGIC =====
+        
+        // Secret Hotkey: Ctrl + Shift + A
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                showHackerOverlay();
+            }
+        });
+
+        // Show Hacker Overlay
+        function showHackerOverlay() {
+            const overlay = document.getElementById('hackerOverlay');
+            
+            // Reset form
+            document.getElementById('hackerPassword').value = '';
+            document.getElementById('hackerPassword').disabled = false;
+            document.getElementById('hackerMessage').classList.add('hidden');
+            
+            // Show overlay with smooth fade-in (300ms)
+            overlay.classList.remove('hidden', 'opacity-0', 'scale-95');
+            overlay.classList.add('opacity-0', 'scale-95');
+            
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0', 'scale-95');
+                overlay.classList.add('opacity-100', 'scale-100');
+                
+                // Focus on password field
+                setTimeout(() => {
+                    document.getElementById('hackerPassword').focus();
+                }, 100);
+            }, 300);
+        }
+
+        // Cancel Admin Access
+        function cancelAdminAccess() {
+            const overlay = document.getElementById('hackerOverlay');
+            
+            // Smooth fade-out
+            overlay.classList.remove('opacity-100', 'scale-100');
+            overlay.classList.add('opacity-0', 'scale-95');
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('opacity-0', 'scale-95');
+                overlay.classList.add('opacity-100', 'scale-100');
+                document.getElementById('hackerMessage').classList.add('hidden');
+                document.getElementById('hackerPassword').value = '';
+                document.getElementById('hackerPassword').disabled = false;
+            }, 500);
+        }
+
+        // Handle Password Input
+        document.getElementById('hackerPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyAdminPassword(this.value);
+            }
+        });
+
+        // Verify Admin Password
+        function verifyAdminPassword(password) {
+            const hackerMessage = document.getElementById('hackerMessage');
+            const hackerOverlay = document.getElementById('hackerOverlay');
+            hackerMessage.classList.remove('hidden');
+            
+            if (password === 'admin@portal123') {
+                // Success - Instant text change with glowing green
+                hackerMessage.innerHTML = '🔓 ACCESS GRANTED. LOADING CORE MATRIX...';
+                hackerMessage.className = 'matrix-text text-xl mb-4';
+                hackerMessage.style.textShadow = '0 0 20px #00ff00, 0 0 40px #00ff00';
+                
+                // Disable input during transition
+                document.getElementById('hackerPassword').disabled = true;
+                
+                // 500ms delay - Start overlay fade-out and shrink
+                setTimeout(() => {
+                    hackerOverlay.classList.remove('opacity-100', 'scale-100');
+                    hackerOverlay.classList.add('opacity-0', 'scale-95');
+                }, 500);
+                
+                // 1000ms delay - Hide overlay completely and show admin dashboard
+                setTimeout(() => {
+                    // Completely hide overlay
+                    hackerOverlay.classList.add('hidden');
+                    hackerOverlay.classList.remove('opacity-0', 'scale-95');
+                    hackerOverlay.classList.add('opacity-100', 'scale-100');
+                    
+                    // Show admin dashboard with fade-in and zoom effect
+                    showAdminDashboard();
+                }, 1000);
+            } else {
+                // Failure
+                hackerMessage.innerHTML = '❌ ACCESS DENIED! IP LOGGED.';
+                hackerMessage.className = 'matrix-text text-xl mb-4 access-denied';
+                
+                setTimeout(() => {
+                    // Smooth fade-out transition
+                    hackerOverlay.classList.remove('opacity-100', 'scale-100');
+                    hackerOverlay.classList.add('opacity-0', 'scale-95');
+                    
+                    setTimeout(() => {
+                        // Hide overlay and reset
+                        hackerOverlay.classList.add('hidden');
+                        hackerOverlay.classList.remove('opacity-0', 'scale-95');
+                        hackerOverlay.classList.add('opacity-100', 'scale-100');
+                        hackerMessage.classList.add('hidden');
+                        document.getElementById('hackerPassword').disabled = false;
+                        document.getElementById('hackerPassword').value = '';
+                    }, 500);
+                }, 2000);
+            }
+        }
+
+        // Show Admin Dashboard
+        function showAdminDashboard() {
+            const userContent = document.getElementById('userContent');
+            const adminDashboard = document.getElementById('adminDashboard');
+            
+            // Hide user content
+            userContent.classList.add('hidden');
+            
+            // Show admin dashboard with fade-in and zoom effect
+            adminDashboard.classList.remove('hidden');
+            adminDashboard.classList.remove('opacity-100', 'scale-100');
+            adminDashboard.classList.add('opacity-0', 'scale-105');
+            
+            // Smooth transition to opacity-100 scale-100
+            setTimeout(() => {
+                adminDashboard.classList.remove('opacity-0', 'scale-105');
+                adminDashboard.classList.add('opacity-100', 'scale-100');
+            }, 50);
+            
+            // Initialize weekly chart after transition
+            setTimeout(() => {
+                initializeWeeklyChart();
+            }, 300);
+        }
+
+        // Weekly chart instance
+        let weeklyChart = null;
+
+        // Initialize Weekly Application Inflow Chart
+        function initializeWeeklyChart() {
+            const ctx = document.getElementById('weeklyChart').getContext('2d');
+            
+            // Destroy existing chart if exists
+            if (weeklyChart) {
+                weeklyChart.destroy();
+            }
+            
+            weeklyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                    datasets: [{
+                        label: 'Applications Received',
+                        data: [120, 300, 450, 200, 175],
+                        backgroundColor: [
+                            'rgba(0, 255, 0, 0.6)',
+                            'rgba(0, 255, 0, 0.7)',
+                            'rgba(0, 255, 0, 0.8)',
+                            'rgba(0, 255, 0, 0.6)',
+                            'rgba(0, 255, 0, 0.5)'
+                        ],
+                        borderColor: [
+                            '#00ff00',
+                            '#00ff00',
+                            '#00ff00',
+                            '#00ff00',
+                            '#00ff00'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        hoverBackgroundColor: '#00ff00',
+                        hoverBorderColor: '#00ff00'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 20, 0, 0.9)',
+                            titleColor: '#00ff00',
+                            bodyColor: '#00ff00',
+                            borderColor: '#00ff00',
+                            borderWidth: 1,
+                            titleFont: {
+                                family: 'Courier New',
+                                size: 14
+                            },
+                            bodyFont: {
+                                family: 'Courier New',
+                                size: 12
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' applications';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 255, 0, 0.1)',
+                                borderColor: '#00ff00'
+                            },
+                            ticks: {
+                                color: '#00ff00',
+                                font: {
+                                    family: 'Courier New'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 255, 0, 0.1)',
+                                borderColor: '#00ff00'
+                            },
+                            ticks: {
+                                color: '#00ff00',
+                                font: {
+                                    family: 'Courier New'
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Exit Admin Dashboard
+        function exitAdmin() {
+            // Smooth fade-out animation before reload
+            const adminDashboard = document.getElementById('adminDashboard');
+            adminDashboard.style.transition = 'opacity 0.5s ease-out';
+            adminDashboard.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Reload the page to completely reset state
+                window.location.reload();
+            }, 500);
         }
     </script>
 </body>
