@@ -6,8 +6,8 @@
  */
 
 const errorHandler = (err, req, res, next) => {
-  // Log error for debugging
-  console.error('Error:', err);
+  // Log error for debugging (server-side only)
+  console.error('Error:', err.message);
 
   // Default error
   let error = { ...err };
@@ -42,8 +42,7 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(error.statusCode || 500).json({
     success: false,
-    error: error.message || 'Server Error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    error: error.message || 'Server Error'
   });
 };
 

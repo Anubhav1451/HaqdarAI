@@ -16,6 +16,71 @@ const getFilteredSchemes = async (req, res) => {
   try {
     const { age, income, state, profession, search } = req.query;
     
+    // Input validation
+    if (age !== undefined) {
+      const parsedAge = parseFloat(age);
+      if (isNaN(parsedAge) || parsedAge < 0 || parsedAge > 150) {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid age value. Must be between 0 and 150.'
+        });
+      }
+    }
+    
+    if (income !== undefined) {
+      const parsedIncome = parseFloat(income);
+      if (isNaN(parsedIncome) || parsedIncome < 0 || parsedIncome > 100000000) {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid income value. Must be between 0 and 100,000,000.'
+        });
+      }
+    }
+    
+    if (state !== undefined) {
+      if (typeof state !== 'string' || state.length > 100) {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid state value. Must be a string under 100 characters.'
+        });
+      }
+    }
+    
+    if (profession !== undefined) {
+      if (typeof profession !== 'string' || profession.length > 100) {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid profession value. Must be a string under 100 characters.'
+        });
+      }
+    }
+    
+    if (search !== undefined) {
+      if (typeof search !== 'string' || search.length > 200) {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid search value. Must be a string under 200 characters.'
+        });
+      }
+      // Sanitize search to prevent ReDoS
+      const dangerousPatterns = [
+        /\*\*/,
+        /\+/,
+        /\{/,
+        /\}/,
+        /\[/,
+        /\]/
+      ];
+      for (const pattern of dangerousPatterns) {
+        if (pattern.test(search)) {
+          return res.status(400).json({
+            success: false,
+            error: 'Search contains invalid characters.'
+          });
+        }
+      }
+    }
+    
     // Build dynamic MongoDB query
     const query = {};
     
@@ -57,7 +122,7 @@ const getFilteredSchemes = async (req, res) => {
     
     // Search filter: case-insensitive regex matching title or category
     if (search && search !== '') {
-      const searchRegex = new RegExp(search, 'i');
+      const searchRegex = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
       query.$or = query.$or || [];
       query.$or.push(
         { title: searchRegex },

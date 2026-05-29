@@ -12,11 +12,57 @@ const processUnstructuredQuery = async (req, res) => {
   try {
     const { query } = req.body;
 
+    // Input validation
     if (!query) {
       return res.status(400).json({
         success: false,
         error: 'Query is required'
       });
+    }
+
+    // Validate query length
+    if (typeof query !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Query must be a string'
+      });
+    }
+
+    if (query.length < 3) {
+      return res.status(400).json({
+        success: false,
+        error: 'Query must be at least 3 characters long'
+      });
+    }
+
+    if (query.length > 500) {
+      return res.status(400).json({
+        success: false,
+        error: 'Query must not exceed 500 characters'
+      });
+    }
+
+    // Sanitize query - remove potential injection patterns
+    const dangerousPatterns = [
+      /ignore previous instructions/i,
+      /ignore all instructions/i,
+      /system:/i,
+      /assistant:/i,
+      /user:/i,
+      /<script/i,
+      /javascript:/i,
+      /eval\(/i,
+      /__proto__/i,
+      /constructor/i
+    ];
+
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(query)) {
+        return res.status(400).json({
+          success: false,
+          error: 'Query contains invalid characters or patterns'
+        });
+      }
     }
 
     // Initialize Google Gen AI SDK
@@ -26,9 +72,14 @@ const processUnstructuredQuery = async (req, res) => {
     // System prompt for extraction
     const systemPrompt = 'You are the extraction engine for Haqdar AI. Analyze the citizen\'s query and extract their demographic parameters. You must return ONLY a raw, clean JSON object. Do not wrap it in markdown code blocks or backticks. Schema: { age: Number or null, income: Number or null, state: String or "All", profession: String or "All" }';
 
-    // Send query to Gemini
-    const prompt = `${systemPrompt}\n\nUser Query: ${query}`;
-    const result = await model.generateContent(prompt);
+    // Send query to Gemini with delimiters to prevent prompt injection
+    const prompt = `${systemPrompt}\n\n[USER_INPUT_START]\n${query}\n[USER_INPUT_END]`;
+    const result = await model.generateContent(prompt, {
+      generationConfig: {
+        maxOutputTokens: 100,
+        temperature: 0.1
+      }
+    });
     const response = await result.response;
     const responseText = response.text();
 
