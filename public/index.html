@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,66 +15,85 @@
 
         /* Ultra-Premium Space Theme */
         body {
-            background: linear-gradient(135deg, #06060c 0%, #0a0a15 25%, #06060c 50%, #0a0a15 75%, #06060c 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            background: #05050a;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        body::before {
-            content: '';
+        #shader-hero-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 242, 254, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(79, 172, 254, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-            animation: nebulaPulse 8s ease-in-out infinite;
-        }
-
-        @keyframes nebulaPulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
-        }
-
-        #three-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            z-index: -1;
             pointer-events: none;
         }
 
-        /* Glassmorphism Effect with Neon Borders */
+        /* Shader Hero Animations */
+        @keyframes fade-in-down {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-down {
+            animation: fade-in-down 0.8s ease-out forwards;
+        }
+        
+        .animate-fade-in-up {
+            animation: fade-in-up 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .animation-delay-200 {
+            animation-delay: 0.2s;
+        }
+        
+        .animation-delay-400 {
+            animation-delay: 0.4s;
+        }
+        
+        .animation-delay-600 {
+            animation-delay: 0.6s;
+        }
+        
+        .animation-delay-800 {
+            animation-delay: 0.8s;
+        }
+
+        /* Premium Glassmorphism Effect */
         .glass {
-            background: rgba(31, 41, 55, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 242, 254, 0.2);
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .glass-dark {
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(79, 172, 254, 0.2);
-            box-shadow: 0 0 30px rgba(79, 172, 254, 0.15), 0 12px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.1), 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
         /* Premium Gradient Text */
@@ -112,22 +130,30 @@
         }
 
         .bento-item {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 242, 254, 0.15);
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 1.25rem;
             padding: 1.5rem;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.05);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.05), 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .bento-item:hover {
-            background: rgba(20, 20, 30, 0.06);
-            border-color: rgba(0, 242, 254, 0.4);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4), 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: rgba(20, 20, 30, 0.8);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.35), 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .bento-item:hover h3,
+        .bento-item:hover h2,
+        .bento-item:hover p,
+        .bento-item:hover i {
+            transform: scale(1.03);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Entry Animations */
@@ -554,8 +580,55 @@
     </style>
 </head>
 <body class="min-h-screen text-white">
-    <!-- Three.js Background Canvas -->
-    <canvas id="three-canvas"></canvas>
+    <!-- Animated Shader Hero Canvas -->
+    <canvas id="shader-hero-canvas"></canvas>
+    
+    <!-- Hero Content Overlay -->
+    <div id="hero-content" class="absolute inset-0 z-10 flex flex-col items-center justify-center text-white">
+        <!-- Trust Badge -->
+        <div class="mb-8 animate-fade-in-down">
+            <div class="flex items-center gap-2 px-6 py-3 bg-orange-500/10 backdrop-blur-md border border-orange-300/30 rounded-full text-sm">
+                <span class="text-yellow-300">✨</span>
+                <span class="text-orange-100">Trusted by forward-thinking teams.</span>
+            </div>
+        </div>
+
+        <div class="text-center space-y-6 max-w-5xl mx-auto px-4">
+            <!-- Main Heading with Animation -->
+            <div class="space-y-2">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
+                    Launch Your
+                </h1>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
+                    Workflow Into Orbit
+                </h1>
+            </div>
+            
+            <!-- Subtitle with Animation -->
+            <div class="max-w-3xl mx-auto animate-fade-in-up animation-delay-600">
+                <p class="text-lg md:text-xl lg:text-2xl text-orange-100/90 font-light leading-relaxed">
+                    Supercharge productivity with AI-powered automation and integrations built for the next generation of teams — fast, seamless, and limitless.
+                </p>
+            </div>
+            
+            <!-- CTA Buttons with Animation -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-800">
+                <button 
+                    onclick="scrollToMainContent()"
+                    class="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25"
+                >
+                    Get Started for Free
+                </button>
+                <button 
+                    onclick="scrollToMainContent()"
+                    class="px-8 py-4 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-300/30 hover:border-orange-300/50 text-orange-100 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                >
+                    Explore Features
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Admin Auth Overlay -->
     <div id="hackerOverlay" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center backdrop-blur-2xl">
         <div class="text-center p-8 max-w-sm w-full glass rounded-2xl shadow-2xl animate-entry">
@@ -1114,96 +1187,219 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
-        // Three.js Background Scene - 3D Floating Particles
-        const initThreeJS = () => {
-            const canvas = document.getElementById('three-canvas');
+        // WebGL Shader Animation - Converted from React to Vanilla JS
+        const initShaderHero = () => {
+            const canvas = document.getElementById('shader-hero-canvas');
             if (!canvas) return;
 
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-            
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-
-            // Create particles
-            const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 1500;
-            const posArray = new Float32Array(particlesCount * 3);
-            const colorsArray = new Float32Array(particlesCount * 3);
-
-            for (let i = 0; i < particlesCount * 3; i += 3) {
-                posArray[i] = (Math.random() - 0.5) * 15;
-                posArray[i + 1] = (Math.random() - 0.5) * 15;
-                posArray[i + 2] = (Math.random() - 0.5) * 15;
-
-                // Neon cyan and purple colors
-                if (Math.random() > 0.5) {
-                    colorsArray[i] = 0;     // R
-                    colorsArray[i + 1] = 0.95; // G (cyan)
-                    colorsArray[i + 2] = 1;     // B
-                } else {
-                    colorsArray[i] = 0.31;  // R
-                    colorsArray[i + 1] = 0.67; // G (purple)
-                    colorsArray[i + 2] = 1;     // B
-                }
+            const gl = canvas.getContext('webgl2');
+            if (!gl) {
+                console.error('WebGL2 not supported');
+                return;
             }
 
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
+            let scale = Math.max(1, 0.5 * window.devicePixelRatio);
+            let mouseMove = [0, 0];
+            let mouseCoords = [0, 0];
+            let pointerCoords = [0, 0];
+            let pointerCount = 0;
+            let animationFrameId;
 
-            const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.03,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.8,
-                blending: THREE.AdditiveBlending
-            });
+            const vertexSrc = `#version 300 es
+precision highp float;
+in vec4 position;
+void main(){gl_Position=position;}`;
 
-            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particlesMesh);
+            const fragmentSrc = `#version 300 es
+/*********
+* made by Matthias Hurrle (@atzedent)
+*
+*	To explore strange new worlds, to seek out new life
+*	and new civilizations, to boldly go where no man has
+*	gone before.
+*/
+precision highp float;
+out vec4 O;
+uniform vec2 resolution;
+uniform float time;
+#define FC gl_FragCoord.xy
+#define T time
+#define R resolution
+#define MN min(R.x,R.y)
+// Returns a pseudo random number for a given point (white noise)
+float rnd(vec2 p) {
+  p=fract(p*vec2(12.9898,78.233));
+  p+=dot(p,p+34.56);
+  return fract(p.x*p.y);
+}
+// Returns a pseudo random number for a given point (value noise)
+float noise(in vec2 p) {
+  vec2 i=floor(p), f=fract(p), u=f*f*(3.-2.*f);
+  float
+  a=rnd(i),
+  b=rnd(i+vec2(1,0)),
+  c=rnd(i+vec2(0,1)),
+  d=rnd(i+1.);
+  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+}
+// Returns a pseudo random number for a given point (fractal noise)
+float fbm(vec2 p) {
+  float t=.0, a=1.; mat2 m=mat2(1.,-.5,.2,1.2);
+  for (int i=0; i<5; i++) {
+    t+=a*noise(p);
+    p*=2.*m;
+    a*=.5;
+  }
+  return t;
+}
+float clouds(vec2 p) {
+	float d=1., t=.0;
+	for (float i=.0; i<3.; i++) {
+		float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
+		t=mix(t,d,a);
+		d=a;
+		p*=2./(i+1.);
+	}
+	return t;
+}
+void main(void) {
+	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
+	vec3 col=vec3(0);
+	float bg=clouds(vec2(st.x+T*.5,-st.y));
+	uv*=1.-.3*(sin(T*.2)*.5+.5);
+	for (float i=1.; i<12.; i++) {
+		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
+		vec2 p=uv;
+		float d=length(p);
+		col+=.00125/d*(cos(sin(i)*vec3(1,2,3))+1.);
+		float b=noise(i+p+bg*1.731);
+		col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));
+		col=mix(col,vec3(bg*.25,bg*.137,bg*.05),d);
+	}
+	O=vec4(col,1);
+}`;
 
-            camera.position.z = 5;
+            const vertices = [-1, 1, -1, -1, 1, 1, 1, -1];
 
-            // Mouse interaction
-            let mouseX = 0;
-            let mouseY = 0;
-
-            document.addEventListener('mousemove', (event) => {
-                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-            });
-
-            // Animation loop
-            const animate = () => {
-                requestAnimationFrame(animate);
-
-                particlesMesh.rotation.x += 0.0002;
-                particlesMesh.rotation.y += 0.0003;
-
-                // Mouse interaction
-                particlesMesh.rotation.x += mouseY * 0.0003;
-                particlesMesh.rotation.y += mouseX * 0.0003;
-
-                renderer.render(scene, camera);
+            // Compile shader
+            const compileShader = (shader, source) => {
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
+                }
             };
 
-            animate();
+            // Setup program
+            const vs = gl.createShader(gl.VERTEX_SHADER);
+            const fs = gl.createShader(gl.FRAGMENT_SHADER);
+            compileShader(vs, vertexSrc);
+            compileShader(fs, fragmentSrc);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('Program link error:', gl.getProgramInfoLog(program));
+                return;
+            }
+
+            // Setup buffer
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+            const position = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(position);
+            gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+
+            const resolutionLoc = gl.getUniformLocation(program, 'resolution');
+            const timeLoc = gl.getUniformLocation(program, 'time');
+            const moveLoc = gl.getUniformLocation(program, 'move');
+            const touchLoc = gl.getUniformLocation(program, 'touch');
+            const pointerCountLoc = gl.getUniformLocation(program, 'pointerCount');
+            const pointersLoc = gl.getUniformLocation(program, 'pointers');
+
+            // Resize handler
+            const resize = () => {
+                scale = Math.max(1, 0.5 * window.devicePixelRatio);
+                canvas.width = window.innerWidth * scale;
+                canvas.height = window.innerHeight * scale;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            };
+
+            // Animation loop
+            const animate = (now) => {
+                gl.clearColor(0, 0, 0, 1);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.useProgram(program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+                
+                gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
+                gl.uniform1f(timeLoc, now * 1e-3);
+                gl.uniform2f(moveLoc, ...mouseMove);
+                gl.uniform2f(touchLoc, ...mouseCoords);
+                gl.uniform1i(pointerCountLoc, pointerCount);
+                gl.uniform2fv(pointersLoc, pointerCoords);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                
+                animationFrameId = requestAnimationFrame(animate);
+            };
+
+            // Mouse handlers
+            document.addEventListener('mousemove', (e) => {
+                mouseMove = [e.movementX, e.movementY];
+                mouseCoords = [e.clientX, canvas.height - e.clientY];
+            });
+
+            // Initialize
+            resize();
+            animate(0);
 
             // Handle resize
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
+            window.addEventListener('resize', resize);
+
+            // Cleanup
+            return () => {
+                window.removeEventListener('resize', resize);
+                cancelAnimationFrame(animationFrameId);
+                gl.deleteProgram(program);
+                gl.deleteShader(vs);
+                gl.deleteShader(fs);
+                gl.deleteBuffer(buffer);
+            };
         };
 
-        // Initialize Three.js when DOM is ready
+        // Initialize shader hero when DOM is ready
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initThreeJS);
+            document.addEventListener('DOMContentLoaded', initShaderHero);
         } else {
-            initThreeJS();
+            initShaderHero();
         }
+
+        // Scroll to main content function
+        function scrollToMainContent() {
+            const heroContent = document.getElementById('hero-content');
+            const userContent = document.getElementById('userContent');
+            
+            if (heroContent) {
+                heroContent.style.display = 'none';
+            }
+            
+            if (userContent) {
+                userContent.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Hide hero on scroll
+        window.addEventListener('scroll', () => {
+            const heroContent = document.getElementById('hero-content');
+            if (heroContent && window.scrollY > 100) {
+                heroContent.style.display = 'none';
+            }
+        });
 
         // Voice Assistant Toggle with Web Speech API - Re-engineered
         let isVoiceActive = false;
