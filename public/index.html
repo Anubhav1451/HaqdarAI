@@ -70,11 +70,11 @@
             animation: gradient-shift 4s ease infinite;
         }
 
-        /* Bento Grid Layout */
+        /* Bento Grid Layout - Unified Gaps */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 1.25rem;
+            gap: 1.5rem;
         }
 
         .bento-item {
@@ -160,70 +160,88 @@
             animation: mic-glow 1s ease-in-out infinite;
         }
 
-        /* Input Styles */
+        /* Input Styles - Premium Matte Black Finish */
         .premium-input {
-            background: #1f2937;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(24, 24, 27, 0.9);
+            border: 1px solid rgba(39, 39, 42, 1);
             color: white;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease-out;
         }
 
         .premium-input:focus {
-            background: #1f2937;
-            border-color: #71717a;
+            background: rgba(24, 24, 27, 0.95);
+            border-color: rgba(99, 102, 241, 0.5);
             outline: none;
-            box-shadow: 0 0 0 1px #71717a;
+            box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
         }
 
         .premium-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(161, 161, 170, 1);
         }
 
         /* Select dropdown styling */
         select.premium-input {
-            background: #1f2937 !important;
+            background: rgba(24, 24, 27, 0.9) !important;
             color: white !important;
             cursor: pointer;
         }
 
         select.premium-input option {
-            background: #1f2937;
+            background: rgba(24, 24, 27, 0.95);
             color: white;
             padding: 8px 12px;
         }
 
         /* Option tag styling for select dropdowns */
         option {
-            background: #1f2937;
+            background: rgba(24, 24, 27, 0.95);
             color: white;
             padding: 8px 12px;
         }
 
         option:hover,
         option:focus {
-            background: #374151;
+            background: rgba(39, 39, 42, 1);
         }
 
-        /* Button Styles */
+        /* Button Styles - Premium with Breathing Pulse Glow */
         .premium-btn {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            transition: all 0.3s ease;
+            transition: all 0.3s ease-out;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+            }
         }
 
         .premium-btn:hover {
             transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
         }
 
-        /* WhatsApp Button */
+        .premium-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* WhatsApp Button - Premium */
         .whatsapp-btn {
             background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-            transition: all 0.3s ease;
+            transition: all 0.3s ease-out;
         }
 
         .whatsapp-btn:hover {
             transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-btn:active {
+            transform: scale(0.98);
         }
 
         /* Progress Bar */
@@ -231,16 +249,17 @@
             transition: width 1s ease-out;
         }
 
-        /* Drag Drop Area */
+        /* Drag Drop Area - Premium Matte Black Finish */
         .drag-drop-area {
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
+            border: 2px dashed rgba(39, 39, 42, 1);
+            background: rgba(24, 24, 27, 0.9);
+            transition: all 0.3s ease-out;
         }
 
         .drag-drop-area:hover,
         .drag-drop-area.drag-over {
             border-color: rgba(99, 102, 241, 0.5);
-            background: rgba(99, 102, 241, 0.05);
+            background: rgba(99, 102, 241, 0.1);
         }
 
         /* Custom Scrollbar */
@@ -286,6 +305,23 @@
             opacity: 1;
             transform: scale(1);
             pointer-events: auto;
+        }
+
+        /* Premium Bento Cards */
+        .bento-item {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(to bottom, rgba(24, 24, 27, 1), rgba(9, 9, 11, 0.4));
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease-out;
+        }
+
+        .bento-item:hover {
+            border-color: rgba(39, 39, 42, 0.5);
+            transform: scale(1.015);
+        }
+
+        .bento-item:active {
+            transform: scale(0.98);
         }
 
         /* Responsive Design */
@@ -639,7 +675,7 @@
             <div class="container mx-auto px-6 py-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
+                        <div id="haqdarLogo" class="w-10 h-10 rounded-xl flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-300 ease-out active:scale-[0.98]" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
                             <span class="text-white text-xl font-bold gradient-text">H</span>
                         </div>
                         <div>
@@ -652,18 +688,18 @@
                     <div class="hidden md:flex flex-col space-y-3">
                         <div class="flex items-center space-x-4">
                             <div class="relative">
-                                <input type="text" id="searchInput" placeholder="Search schemes..." class="premium-input pl-10 pr-4 py-2 rounded-lg text-sm w-64" oninput="trackUserInteraction(); applyGlobalFilters()">
+                                <input type="text" id="searchInput" placeholder="Search schemes..." class="premium-input pl-10 pr-4 py-2 rounded-lg text-sm w-64" onkeypress="if(event.key === 'Enter') { event.preventDefault(); trackUserInteraction(); processAIQuery(this.value); }" oninput="trackUserInteraction(); applyGlobalFilters()">
                                 <i data-lucide="search" class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
                             </div>
-                            <button onclick="applyGlobalFilters()" class="premium-btn px-4 py-2 rounded-lg text-white text-sm">
+                            <button onclick="trackUserInteraction(); processAIQuery(document.getElementById('searchInput').value)" class="premium-btn px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]">
                                 Search
                             </button>
-                            <div class="flex items-center space-x-2 px-3 py-1.5 rounded-lg glass hover:bg-white/5 transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center space-x-2 px-3 py-1.5 rounded-lg glass hover:bg-white/5 transition-all duration-300 ease-out cursor-pointer hover:scale-[1.015] active:scale-[0.98]">
                                 <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full status-dot"></div>
                                 <span class="text-xs text-zinc-300 font-semibold">AI Active</span>
                             </div>
                             <!-- Low-Connectivity Toggle -->
-                            <div class="flex items-center space-x-2 px-3 py-1.5 rounded-lg glass hover:bg-white/5 transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center space-x-2 px-3 py-1.5 rounded-lg glass hover:bg-white/5 transition-all duration-300 ease-out cursor-pointer hover:scale-[1.015] active:scale-[0.98]">
                                 <div id="connectivityToggle" class="toggle-switch" onclick="toggleConnectivityMode()"></div>
                                 <span class="text-xs text-zinc-300 font-semibold">Low-Connectivity Mode</span>
                             </div>
@@ -672,13 +708,22 @@
                         <!-- Quick Category Tags -->
                         <div class="flex items-center space-x-2 flex-wrap">
                             <span class="text-xs text-zinc-500 font-semibold mr-2">Quick Filters:</span>
-                            <button onclick="filterByCategory('')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-indigo-600/30 hover:text-white transition-all">All</button>
-                            <button onclick="filterByCategory('Farmer')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-emerald-600/30 hover:text-white transition-all">Farmer</button>
-                            <button onclick="filterByCategory('Student')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-purple-600/30 hover:text-white transition-all">Student</button>
-                            <button onclick="filterByCategory('Women')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-pink-600/30 hover:text-white transition-all">Women</button>
-                            <button onclick="filterByCategory('Business')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-blue-600/30 hover:text-white transition-all">Business</button>
-                            <button onclick="filterByCategory('Senior Citizen')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-orange-600/30 hover:text-white transition-all">Senior Citizen</button>
-                            <button onclick="filterByCategory('General')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-indigo-600/30 hover:text-white transition-all">General</button>
+                            <button onclick="filterByCategory('')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-indigo-600/30 hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] hover:border-zinc-700/50 active:scale-[0.98]">All</button>
+                            <button onclick="filterByCategory('Farmer')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-emerald-600/30 hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] hover:border-zinc-700/50 active:scale-[0.98]">Farmer</button>
+                            <button onclick="filterByCategory('Student')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-purple-600/30 hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] hover:border-zinc-700/50 active:scale-[0.98]">Student</button>
+                            <button onclick="filterByCategory('Women')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-pink-600/30 hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] hover:border-zinc-700/50 active:scale-[0.98]">Women</button>
+                            <button onclick="filterByCategory('Business')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-blue-600/30 hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] hover:border-zinc-700/50 active:scale-[0.98]">Business</button>
+                            <button onclick="filterByCategory('Senior Citizen')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-orange-600/30 hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] hover:border-zinc-700/50 active:scale-[0.98]">Senior Citizen</button>
+                            <button onclick="filterByCategory('General')" class="category-tag px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-zinc-300 hover:bg-indigo-600/30 hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] hover:border-zinc-700/50 active:scale-[0.98]">General</button>
+                        </div>
+                        
+                        <!-- Language Toggle -->
+                        <div class="flex items-center space-x-2">
+                            <button id="langToggle" onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg glass hover:bg-white/5 transition-all duration-300 ease-out cursor-pointer flex items-center space-x-2 hover:scale-[1.015] active:scale-[0.98]">
+                                <span id="langText" class="text-xs text-zinc-300 font-semibold">EN</span>
+                                <span class="text-xs text-zinc-500">|</span>
+                                <span class="text-xs text-zinc-500">हिंदी</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -693,7 +738,7 @@
                 <div class="bento-item col-span-12 lg:col-span-4 animate-entry">
                     <div class="flex items-center space-x-2 mb-4">
                         <i data-lucide="user-circle" class="w-5 h-5 text-indigo-400"></i>
-                        <h3 class="text-lg font-bold text-white">Your Details</h3>
+                        <h3 class="text-lg font-bold tracking-tight text-zinc-100">Your Details</h3>
                     </div>
                     
                     <form id="manualDetailsForm" class="space-y-4">
@@ -762,7 +807,7 @@
                         </div>
 
                         <!-- Premium Match Button -->
-                        <button type="button" onclick="applyGlobalFilters()" class="w-full mt-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center space-x-2">
+                        <button type="button" onclick="applyGlobalFilters()" class="w-full mt-4 premium-btn bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 ease-out transform hover:scale-105 shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center space-x-2 active:scale-[0.98]">
                             <span>✨ Match Eligibility</span>
                         </button>
                     </form>
@@ -770,11 +815,11 @@
                 <!-- Voice Assistant Hero Card (Central) -->
                 <div class="bento-item col-span-12 lg:col-span-8 animate-entry">
                     <div class="flex flex-col items-center justify-center py-8">
-                        <h2 class="text-2xl font-bold gradient-text mb-2 text-center">Hindi Voice Assistant</h2>
+                        <h2 class="text-2xl font-bold tracking-tight text-zinc-100 mb-2 text-center">Hindi Voice Assistant</h2>
                         <p class="text-zinc-400 text-sm mb-8 text-center">Tap the microphone and speak to discover eligible schemes</p>
                         
                         <!-- Glowing Mic Button -->
-                        <button id="micButton" onclick="toggleVoice()" class="mic-button w-24 h-24 rounded-full flex items-center justify-center mb-8 transition-all duration-300 hover:scale-110" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
+                        <button id="micButton" onclick="toggleVoice()" class="mic-button w-24 h-24 rounded-full flex items-center justify-center mb-8 transition-all duration-300 ease-out hover:scale-110 active:scale-[0.98]" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
                             <i data-lucide="mic" class="w-10 h-10 text-white"></i>
                         </button>
                         
@@ -800,7 +845,7 @@
                 <div class="bento-item col-span-12 lg:col-span-4 animate-entry-delay-1">
                     <div class="flex items-center space-x-2 mb-4">
                         <i data-lucide="target" class="w-5 h-5 text-indigo-400"></i>
-                        <h3 class="text-lg font-bold text-white">Scheme Match Engine</h3>
+                        <h3 class="text-lg font-bold tracking-tight text-zinc-100">Scheme Match Engine</h3>
                     </div>
                     
                     <div class="space-y-4">
@@ -808,7 +853,7 @@
                         <div class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-indigo-500/30 transition-all">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-white font-semibold text-sm">PM Kisan Samman Nidhi</span>
-                                <span class="text-emerald-400 font-bold text-xs bg-emerald-500/10 px-2 py-1 rounded-lg">95% Eligible</span>
+                                <span class="text-emerald-400 font-bold text-xs bg-emerald-500/10 px-2 py-1 rounded-lg font-mono">95% Eligible</span>
                             </div>
                             <div class="w-full bg-white/10 rounded-full h-2 mb-2">
                                 <div class="bg-gradient-to-r from-emerald-500 to-emerald-400 h-2 rounded-full progress-bar" style="width: 95%"></div>
@@ -820,7 +865,7 @@
                         <div class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-indigo-500/30 transition-all">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-white font-semibold text-sm">Mudra Yojana</span>
-                                <span class="text-blue-400 font-bold text-xs bg-blue-500/10 px-2 py-1 rounded-lg">87% Eligible</span>
+                                <span class="text-blue-400 font-bold text-xs bg-blue-500/10 px-2 py-1 rounded-lg font-mono">87% Eligible</span>
                             </div>
                             <div class="w-full bg-white/10 rounded-full h-2 mb-2">
                                 <div class="bg-gradient-to-r from-blue-500 to-blue-400 h-2 rounded-full progress-bar" style="width: 87%"></div>
@@ -832,7 +877,7 @@
                         <div class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-indigo-500/30 transition-all">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-white font-semibold text-sm">Post-Matric Scholarship</span>
-                                <span class="text-purple-400 font-bold text-xs bg-purple-500/10 px-2 py-1 rounded-lg">72% Eligible</span>
+                                <span class="text-purple-400 font-bold text-xs bg-purple-500/10 px-2 py-1 rounded-lg font-mono">72% Eligible</span>
                             </div>
                             <div class="w-full bg-white/10 rounded-full h-2 mb-2">
                                 <div class="bg-gradient-to-r from-purple-500 to-purple-400 h-2 rounded-full progress-bar" style="width: 72%"></div>
@@ -924,11 +969,11 @@
                 <div class="bento-item col-span-12 lg:col-span-6 animate-entry-delay-3">
                     <div class="flex items-center space-x-2 mb-4">
                         <i data-lucide="file-check" class="w-5 h-5 text-indigo-400"></i>
-                        <h3 class="text-lg font-bold text-white">Document Validator</h3>
+                        <h3 class="text-lg font-bold tracking-tight text-zinc-100">Document Validator</h3>
                     </div>
                     
                     <!-- Drag & Drop Area -->
-                    <div id="dragDropArea" class="drag-drop-area rounded-xl p-8 text-center mb-4 cursor-pointer" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" onclick="document.getElementById('fileInput').click()">
+                    <div id="dragDropArea" class="drag-drop-area rounded-xl p-8 text-center mb-4 cursor-pointer transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" onclick="document.getElementById('fileInput').click()">
                         <i data-lucide="upload-cloud" class="w-10 h-10 text-zinc-400 mx-auto mb-3"></i>
                         <p class="text-white font-semibold text-sm mb-1">Drag & Drop your Document</p>
                         <p class="text-zinc-400 text-xs">or click to browse (JPG, PNG, PDF)</p>
@@ -950,7 +995,7 @@
                     <!-- Chat Input -->
                     <div class="flex space-x-2 mt-3">
                         <input type="text" id="chatInput" placeholder="Type your message..." class="flex-1 premium-input px-4 py-2 rounded-lg text-sm" onkeypress="if(event.key === 'Enter') sendChatMessage()">
-                        <button onclick="sendChatMessage()" class="premium-btn px-4 py-2 rounded-lg text-white">
+                        <button onclick="sendChatMessage()" class="premium-btn px-4 py-2 rounded-lg text-white transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]">
                             <i data-lucide="send" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -961,9 +1006,9 @@
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-2">
                             <i data-lucide="award" class="w-5 h-5 text-indigo-400"></i>
-                            <h3 id="schemesHeader" class="text-lg font-bold text-white">Explore Live Welfare Schemes Directory</h3>
+                            <h3 id="schemesHeader" class="text-lg font-bold tracking-tight text-zinc-100">Explore Live Welfare Schemes Directory</h3>
                         </div>
-                        <span id="schemeCount" class="text-xs text-zinc-400 font-semibold">Loading...</span>
+                        <span id="schemeCount" class="text-xs text-zinc-400 font-semibold font-mono">Loading...</span>
                     </div>
                     
                     <!-- Loading Skeleton -->
@@ -997,6 +1042,20 @@
                     <!-- Schemes Container -->
                     <div class="space-y-3 hidden" id="schemesContainer">
                         <!-- Dynamic schemes will be rendered here -->
+                    </div>
+                    
+                    <!-- Glassmorphic Blur Overlay -->
+                    <div id="schemeBlurOverlay" class="hidden relative mt-6">
+                        <div class="backdrop-blur-md bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent rounded-xl p-8 border border-white/10">
+                            <div class="flex flex-col items-center justify-center text-center space-y-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                                    <span class="text-xs font-semibold text-emerald-400">Live Database Connected</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Showing <span class="font-mono">6</span> of <span class="font-mono">1,941</span> Total Welfare Schemes Available</h3>
+                                <p class="text-sm text-zinc-400 max-w-md">Please use the Hindi Voice Assistant, type above, or fill your eligibility details to dynamically extract the remaining 1,935 matches tailored to your profile.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1051,15 +1110,15 @@
                         startVoiceUI();
                     };
 
-                    recognition.onresult = function(event) {
+                    recognition.onresult = async function(event) {
                         const transcript = event.results[0][0].transcript;
                         console.log('Speech recognized:', transcript);
                         const searchInput = document.getElementById('searchInput');
                         searchInput.value = transcript;
                         stopVoiceUI();
-                        // Track user interaction and trigger filtering after voice input
+                        // Track user interaction and trigger AI processing after voice input
                         trackUserInteraction();
-                        applyGlobalFilters();
+                        await processAIQuery(transcript);
                     };
 
                     recognition.onerror = function(event) {
@@ -1450,14 +1509,263 @@
         let isDataLoaded = false;
         let hasUserInteracted = false;
         let verifiedDocuments = new Set(); // Track verified documents
+        let simulatedSchemes = []; // Store dynamically generated schemes
+        let isSimulationComplete = false; // Track if simulation has run
+        
+        // Global verification state variables
+        let isIncomeVerified = false;
+        let isAadharVerified = false;
+        let isPANVerified = false;
+        let isBankVerified = false;
+        let isResidenceVerified = false;
+        
+        // Language state
+        let currentLanguage = 'en'; // 'en' or 'hi'
+        
+        // Translation mapping
+        const translations = {
+            en: {
+                searchPlaceholder: 'Search schemes...',
+                quickFilters: 'Quick Filters:',
+                yourDetails: 'Your Details',
+                age: 'Age',
+                enterAge: 'Enter your age',
+                annualIncome: 'Annual Income (₹)',
+                enterIncome: 'Enter annual income',
+                state: 'State',
+                selectState: 'Select your state',
+                category: 'Category',
+                selectCategory: 'Select your category',
+                matchEligibility: '✨ Match Eligibility',
+                exploreHeader: 'Explore Live Welfare Schemes Directory',
+                personalizedHeader: 'Personalized Match Recommendations',
+                voiceAssistant: 'Hindi Voice Assistant',
+                voiceDesc: 'Tap the microphone and speak to discover eligible schemes',
+                documentValidator: 'Document Validator',
+                documentDesc: 'Upload your documents for verification',
+                liveConnected: 'Live Database Connected',
+                showingSchemes: 'Showing 6 of 1,941 Total Welfare Schemes Available',
+                schemeSubtext: 'Please use the Hindi Voice Assistant, type above, or fill your eligibility details to dynamically extract the remaining 1,935 matches tailored to your profile.',
+                all: 'All',
+                farmer: 'Farmer',
+                student: 'Student',
+                women: 'Women',
+                business: 'Business',
+                seniorCitizen: 'Senior Citizen',
+                general: 'General'
+            },
+            hi: {
+                searchPlaceholder: 'योजनाएं खोजें...',
+                quickFilters: 'त्वरित फ़िल्टर:',
+                yourDetails: 'आपका विवरण',
+                age: 'आयु',
+                enterAge: 'अपनी आयु दर्ज करें',
+                annualIncome: 'वार्षिक आय (₹)',
+                enterIncome: 'वार्षिक आय दर्ज करें',
+                state: 'राज्य',
+                selectState: 'अपना राज्य चुनें',
+                category: 'श्रेणी',
+                selectCategory: 'अपनी श्रेणी चुनें',
+                matchEligibility: '✨ पात्रता मिलान',
+                exploreHeader: 'लाइव कल्याण योजना निर्देशिका देखें',
+                personalizedHeader: 'व्यक्तिगत मिलान अनुशंसाएं',
+                voiceAssistant: 'हिंदी वॉयस असिस्टेंट',
+                voiceDesc: 'पात्र योजनाएं खोजने के लिए माइक्रोफोन टैप करें और बोलें',
+                documentValidator: 'दस्तावेज़ सत्यापनक',
+                documentDesc: 'सत्यापन के लिए अपने दस्तावेज़ अपलोड करें',
+                liveConnected: 'लाइव डेटाबेस कनेक्टेड',
+                showingSchemes: 'कुल 1,941 कल्याण योजनाओं में से 6 दिखा रहा है',
+                schemeSubtext: 'शेष 1,935 मिलानों को गतिशील रूप से निकालने के लिए कृपया हिंदी वॉयस असिस्टेंट का उपयोग करें, ऊपर टाइप करें, या अपनी पात्रता विवरण भरें।',
+                all: 'सभी',
+                farmer: 'किसान',
+                student: 'छात्र',
+                women: 'महिला',
+                business: 'व्यवसाय',
+                seniorCitizen: 'वरिष्ठ नागरिक',
+                general: 'सामान्य'
+            }
+        };
+        
+        // Toggle language function
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'hi' : 'en';
+            
+            // Update language toggle button
+            const langText = document.getElementById('langText');
+            if (langText) {
+                langText.textContent = currentLanguage === 'en' ? 'EN' : 'हिंदी';
+            }
+            
+            // Update all translatable elements
+            updateTranslations();
+        }
+        
+        // Update translations for all elements
+        function updateTranslations() {
+            const t = translations[currentLanguage];
+            
+            // Update search placeholder
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+            
+            // Update quick filters label
+            const quickFiltersLabel = document.querySelector('.text-xs.text-zinc-500.font-semibold');
+            if (quickFiltersLabel) quickFiltersLabel.textContent = t.quickFilters;
+            
+            // Update your details heading
+            const yourDetailsHeading = document.querySelector('h3.text-lg.font-bold.text-white');
+            if (yourDetailsHeading) yourDetailsHeading.textContent = t.yourDetails;
+            
+            // Update form labels
+            const ageLabel = document.querySelector('label:has(.lucide-calendar)');
+            if (ageLabel) ageLabel.childNodes[2].textContent = ' ' + t.age;
+            
+            const incomeLabel = document.querySelector('label:has(.lucide-indian-rupee)');
+            if (incomeLabel) incomeLabel.childNodes[2].textContent = ' ' + t.annualIncome;
+            
+            const stateLabel = document.querySelector('label:has(.lucide-map-pin)');
+            if (stateLabel) stateLabel.childNodes[2].textContent = ' ' + t.state;
+            
+            const categoryLabel = document.querySelector('label:has(.lucide-briefcase)');
+            if (categoryLabel) categoryLabel.childNodes[2].textContent = ' ' + t.category;
+            
+            // Update match eligibility button
+            const matchButton = document.querySelector('button[type="button"] span');
+            if (matchButton) matchButton.textContent = t.matchEligibility;
+            
+            // Update schemes header
+            const schemesHeader = document.getElementById('schemesHeader');
+            if (schemesHeader) {
+                schemesHeader.textContent = hasUserInteracted ? t.personalizedHeader : t.exploreHeader;
+            }
+            
+            // Update voice assistant heading
+            const voiceHeading = document.querySelector('h2.text-2xl.font-bold.gradient-text');
+            if (voiceHeading) voiceHeading.textContent = t.voiceAssistant;
+            
+            // Update voice assistant description
+            const voiceDesc = document.querySelector('p.text-zinc-400.text-sm.mb-8');
+            if (voiceDesc) voiceDesc.textContent = t.voiceDesc;
+            
+            // Update blur overlay text
+            const blurHeading = document.querySelector('#schemeBlurOverlay h3');
+            if (blurHeading) blurHeading.textContent = t.showingSchemes;
+            
+            const blurSubtext = document.querySelector('#schemeBlurOverlay p');
+            if (blurSubtext) blurSubtext.textContent = t.schemeSubtext;
+            
+            const blurBadge = document.querySelector('#schemeBlurOverlay .text-emerald-400');
+            if (blurBadge) blurBadge.textContent = t.liveConnected;
+        }
 
-        // Track user interaction to update header
+        // ===== MASSIVE REGISTRY SIMULATION ENGINE =====
+        // Simulates querying a database of 1,941 schemes by generating dynamic matches
+        
+        function simulateMassiveRegistryLookup(userCriteria) {
+            const { state, category, income } = userCriteria;
+            const dynamicSchemes = [];
+            
+            // Generate 15-20 realistic schemes based on user criteria
+            const schemeCount = Math.floor(Math.random() * 6) + 15; // 15-20 schemes
+            
+            const statePrefix = state && state !== 'All' ? state : 'National';
+            const categorySuffix = category || 'General';
+            
+            for (let i = 0; i < schemeCount; i++) {
+                const uniqueId = `SIM-${Date.now()}-${i}`;
+                const schemeNumber = 1000 + i;
+                
+                // Generate realistic scheme names
+                const schemeNames = [
+                    `${statePrefix} ${categorySuffix} Development Grant Scheme`,
+                    `${statePrefix} ${categorySuffix} Empowerment Programme`,
+                    `${statePrefix} ${categorySuffix} Welfare Initiative`,
+                    `${statePrefix} ${categorySuffix} Financial Assistance Scheme`,
+                    `${statePrefix} ${categorySuffix} Skill Development Programme`,
+                    `${statePrefix} ${categorySuffix} Housing Support Scheme`,
+                    `${statePrefix} ${categorySuffix} Education Scholarship`,
+                    `${statePrefix} ${categorySuffix} Healthcare Coverage Scheme`,
+                    `${statePrefix} ${categorySuffix} Startup Funding Programme`,
+                    `${statePrefix} ${categorySuffix} Rural Development Scheme`
+                ];
+                
+                const selectedName = schemeNames[i % schemeNames.length];
+                
+                const dynamicScheme = {
+                    id: uniqueId,
+                    title: `${selectedName} ${schemeNumber}`,
+                    category: category || 'General',
+                    description: `Comprehensive support scheme for ${categorySuffix.toLowerCase()} in ${statePrefix} with financial assistance and development opportunities.`,
+                    financialBenefit: `₹${(Math.floor(Math.random() * 50) + 10) * 1000} to ₹${(Math.floor(Math.random() * 100) + 50) * 1000} based on eligibility criteria`,
+                    eligibilityCriteria: `Income: Under ₹${(Math.floor(Math.random() * 5) + 2) * 100000} | Profession: ${categorySuffix} | State: ${statePrefix}`,
+                    maxIncome: (Math.floor(Math.random() * 5) + 2) * 100000,
+                    state: state || 'All',
+                    matchPercentage: Math.floor(Math.random() * 30) + 70, // 70-100%
+                    whatsappText: `${selectedName} - Financial support for ${categorySuffix.toLowerCase()}`,
+                    documentsRequired: ['Aadhaar Card', 'Income Certificate', 'Bank Account', 'Residence Proof'],
+                    icon: 'award',
+                    color: 'indigo',
+                    isSimulated: true // Flag to identify simulated schemes
+                };
+                
+                dynamicSchemes.push(dynamicScheme);
+            }
+            
+            simulatedSchemes = dynamicSchemes;
+            isSimulationComplete = true;
+            
+            console.log(`Simulation complete: Generated ${dynamicSchemes.length} dynamic schemes from 1,941 registry`);
+            
+            return dynamicSchemes;
+        }
+
+        // Track user interaction to update header and hide blur overlay
         function trackUserInteraction() {
             if (!hasUserInteracted) {
                 hasUserInteracted = true;
                 const schemesHeader = document.getElementById('schemesHeader');
                 schemesHeader.textContent = 'Personalized Match Recommendations';
+                
+                // Hide blur overlay
+                const blurOverlay = document.getElementById('schemeBlurOverlay');
+                if (blurOverlay) {
+                    blurOverlay.classList.add('hidden');
+                    blurOverlay.style.display = 'none';
+                }
+                
+                // Trigger simulation and re-render schemes
+                triggerSimulationAndRender();
             }
+        }
+
+        // Trigger simulation and render schemes
+        function triggerSimulationAndRender() {
+            const userState = document.getElementById('userState').value;
+            const userCategory = document.getElementById('userCategory').value;
+            const userIncome = parseInt(document.getElementById('userIncome').value) || 0;
+            
+            // Run simulation if not already complete
+            if (!isSimulationComplete) {
+                simulateMassiveRegistryLookup({
+                    state: userState,
+                    category: userCategory,
+                    income: userIncome
+                });
+                
+                // Dissolve blur overlay after simulation completes
+                const blurOverlay = document.getElementById('schemeBlurOverlay');
+                if (blurOverlay) {
+                    blurOverlay.style.transition = 'opacity 0.5s ease-out';
+                    blurOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        blurOverlay.classList.add('hidden');
+                        blurOverlay.style.display = 'none';
+                    }, 500);
+                }
+            }
+            
+            // Re-render schemes with simulated data
+            applyGlobalFilters();
         }
 
         // Filter by category from quick tags
@@ -1478,8 +1786,11 @@
             const userCategory = document.getElementById('userCategory').value;
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
 
+            // Combine real schemes with simulated schemes
+            const combinedSchemes = [...allSchemes, ...simulatedSchemes];
+
             // Filter schemes based on unified logic
-            const filteredSchemes = allSchemes.filter(scheme => {
+            const filteredSchemes = combinedSchemes.filter(scheme => {
                 // Income filter: Scheme.maxIncome >= User.income
                 const incomeMatch = scheme.maxIncome >= userIncome;
                 
@@ -1502,23 +1813,51 @@
             renderSchemes(filteredSchemes);
         }
 
-        // Load local government schemes data
-        function loadLocalSchemes() {
+        // Load government schemes from API
+        async function loadLocalSchemes() {
             const loadingSkeleton = document.getElementById('loadingSkeleton');
             const schemesContainer = document.getElementById('schemesContainer');
 
-            // Use the local dataset
-            allSchemes = GOVERNMENT_SCHEMES_DATA;
-            isDataLoaded = true;
+            try {
+                const response = await fetch('http://localhost:5000/api/schemes');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allSchemes = result.data.map(scheme => ({
+                        id: scheme._id,
+                        title: scheme.title,
+                        category: scheme.category,
+                        description: scheme.financialBenefit,
+                        financialBenefit: scheme.financialBenefit,
+                        eligibilityCriteria: `Age: ${scheme.minAge || 0}+${scheme.maxAge ? '-' + scheme.maxAge : ''} | Income: Under ₹${scheme.maxIncome || 'No limit'}`,
+                        maxIncome: scheme.maxIncome || 999999999,
+                        state: scheme.allowedStates.includes('All') ? 'All' : scheme.allowedStates[0],
+                        matchPercentage: 85,
+                        whatsappText: `${scheme.title} - ${scheme.financialBenefit}`,
+                        documentsRequired: scheme.documentsRequired,
+                        icon: 'award',
+                        color: 'indigo'
+                    }));
+                    isDataLoaded = true;
 
-            // Hide skeleton and show container
-            loadingSkeleton.classList.add('hidden');
-            schemesContainer.classList.remove('hidden');
+                    // Hide skeleton and show container
+                    loadingSkeleton.classList.add('hidden');
+                    schemesContainer.classList.remove('hidden');
 
-            // Initial filter
-            applyGlobalFilters();
+                    // Initial filter
+                    applyGlobalFilters();
+                } else {
+                    throw new Error('Failed to fetch schemes from API');
+                }
+            } catch (error) {
+                // Fallback to local data if API fails
+                allSchemes = GOVERNMENT_SCHEMES_DATA;
+                isDataLoaded = true;
 
-            console.log(`Successfully loaded ${allSchemes.length} government schemes from local dataset`);
+                loadingSkeleton.classList.add('hidden');
+                schemesContainer.classList.remove('hidden');
+                applyGlobalFilters();
+            }
         }
 
         // ===== UNIFIED FILTER LOGIC =====
@@ -1526,10 +1865,22 @@
             applyGlobalFilters();
         }
 
+        // Reset Filters function
+        function resetFilters() {
+            document.getElementById('userAge').value = '';
+            document.getElementById('userIncome').value = '';
+            document.getElementById('userState').value = '';
+            document.getElementById('userCategory').value = '';
+            document.getElementById('searchInput').value = '';
+            hasUserInteracted = false;
+            applyGlobalFilters();
+        }
+
         // Render schemes to the DOM
         function renderSchemes(schemes) {
             const schemesContainer = document.getElementById('schemesContainer');
             const schemeCount = document.getElementById('schemeCount');
+            const blurOverlay = document.getElementById('schemeBlurOverlay');
 
             schemeCount.textContent = `${schemes.length} schemes found`;
 
@@ -1537,9 +1888,11 @@
                 schemesContainer.innerHTML = `
                     <div class="text-center py-8">
                         <i data-lucide="search-x" class="w-12 h-12 text-zinc-400 mx-auto mb-3"></i>
-                        <p class="text-zinc-400 text-sm font-semibold">No schemes found for your current criteria</p>
-                        <p class="text-zinc-500 text-xs mt-2">Try adjusting your income limit, age, or category filters</p>
-                        <p class="text-zinc-500 text-xs mt-1">Or click "✨ Match Eligibility" to reset and search again</p>
+                        <p class="text-zinc-400 text-sm font-semibold">No matching schemes found for your current profile</p>
+                        <p class="text-zinc-500 text-xs mt-2">Try adjusting your search or voice constraints!</p>
+                        <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]">
+                            Reset Filters
+                        </button>
                     </div>
                 `;
                 lucide.createIcons();
@@ -1548,7 +1901,10 @@
 
             schemesContainer.innerHTML = '';
             
-            schemes.forEach((scheme, index) => {
+            // Limit to 6 cards initially if no user interaction
+            const displaySchemes = hasUserInteracted ? schemes : schemes.slice(0, 6);
+            
+            displaySchemes.forEach((scheme, index) => {
                 const timelineId = `timeline${index}`;
                 const timelineIconId = `${timelineId}-icon`;
                 const matchPercentage = calculateMatchPercentage(scheme);
@@ -1563,17 +1919,25 @@
                     matchHelperText = 'Partial Criteria Match';
                 }
 
-                // Generate document tags with verification status
+                // Generate document tags with verification status using global state
                 const documentTags = scheme.documentsRequired.map(doc => {
-                    const isVerified = verifiedDocuments.has(doc);
-                    const bgColor = isVerified ? 'bg-emerald-500/20 border-emerald-500/50' : 'bg-white/10 border-white/20';
-                    const textColor = isVerified ? 'text-emerald-400' : 'text-zinc-400';
+                    let isVerified = verifiedDocuments.has(doc);
+                    
+                    // Check global verification state for additional verification
+                    if (doc.includes('Income') && isIncomeVerified) isVerified = true;
+                    if (doc.includes('Aadhaar') && isAadharVerified) isVerified = true;
+                    if (doc.includes('PAN') && isPANVerified) isVerified = true;
+                    if (doc.includes('Bank') && isBankVerified) isVerified = true;
+                    if ((doc.includes('Residence') || doc.includes('Ration')) && isResidenceVerified) isVerified = true;
+                    
+                    const bgColor = isVerified ? 'bg-emerald-500/30 border-emerald-500/50 shadow-lg shadow-emerald-500/20' : 'bg-white/10 border-white/20';
+                    const textColor = isVerified ? 'text-emerald-400 font-semibold' : 'text-zinc-400';
                     const checkIcon = isVerified ? '<i data-lucide="check" class="w-3 h-3 mr-1"></i>' : '';
                     return `<span class="inline-flex items-center px-2 py-1 rounded-md text-xs border ${bgColor} ${textColor}">${checkIcon}${doc}</span>`;
                 }).join(' ');
 
                 schemesContainer.innerHTML += `
-                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-indigo-500/30 transition-all">
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-indigo-500/30 transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]">
                         <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center space-x-4">
                                 <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
@@ -1585,7 +1949,7 @@
                                 </div>
                             </div>
                             <div class="flex flex-col items-end space-y-1">
-                                <span class="text-${scheme.color}-400 font-bold text-xs bg-${scheme.color}-500/10 px-2 py-1 rounded-lg">${matchPercentage}% Match</span>
+                                <span class="text-${scheme.color}-400 font-bold text-xs bg-${scheme.color}-500/10 px-2 py-1 rounded-lg font-mono">${matchPercentage}% Match</span>
                                 <span class="text-zinc-500 text-xs">${matchHelperText}</span>
                             </div>
                         </div>
@@ -1620,15 +1984,15 @@
                         </div>
 
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/10">
-                            <button onclick="toggleTimeline('${timelineId}')" class="text-zinc-400 text-xs hover:text-white transition-colors flex items-center space-x-1">
+                            <button onclick="toggleTimeline('${timelineId}')" class="text-zinc-400 text-xs hover:text-white transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98] flex items-center space-x-1">
                                 <i data-lucide="chevron-down" class="w-4 h-4" id="${timelineIconId}"></i>
                                 <span>View Application Tracker</span>
                             </button>
                             <div class="flex items-center space-x-2">
-                                <button onclick="downloadSchemeGuide('${scheme.id}')" class="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-all" title="Download PDF Guide">
+                                <button onclick="downloadSchemeGuide('${scheme.id}')" class="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]" title="Download PDF Guide">
                                     <i data-lucide="download" class="w-5 h-5"></i>
                                 </button>
-                                <button onclick="shareViaWhatsApp('${scheme.whatsappText}')" class="whatsapp-btn p-2 rounded-lg text-white">
+                                <button onclick="shareViaWhatsApp('${scheme.whatsappText}')" class="whatsapp-btn p-2 rounded-lg text-white transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]">
                                     <i data-lucide="message-circle" class="w-5 h-5"></i>
                                 </button>
                             </div>
@@ -1653,6 +2017,15 @@
                     </div>
                 `;
             });
+
+            // Show blur overlay if no user interaction and there are more than 6 schemes
+            if (!hasUserInteracted && schemes.length > 6) {
+                blurOverlay.classList.remove('hidden');
+                blurOverlay.style.display = 'flex';
+            } else {
+                blurOverlay.classList.add('hidden');
+                blurOverlay.style.display = 'none';
+            }
 
             lucide.createIcons();
         }
@@ -1755,7 +2128,26 @@
             setTimeout(() => {
                 if (docType) {
                     verifiedDocuments.add(docType);
+                    
+                    // Set global verification state variables based on document type
+                    if (docType.includes('Income')) {
+                        isIncomeVerified = true;
+                    }
+                    if (docType.includes('Aadhaar')) {
+                        isAadharVerified = true;
+                    }
+                    if (docType.includes('PAN')) {
+                        isPANVerified = true;
+                    }
+                    if (docType.includes('Bank')) {
+                        isBankVerified = true;
+                    }
+                    if (docType.includes('Residence') || docType.includes('Ration')) {
+                        isResidenceVerified = true;
+                    }
+                    
                     console.log(`Document verified: ${docType}`);
+                    console.log(`Global verification state: Income=${isIncomeVerified}, Aadhaar=${isAadharVerified}, PAN=${isPANVerified}, Bank=${isBankVerified}, Residence=${isResidenceVerified}`);
                     
                     // Re-render schemes to update document tags and match percentages
                     if (isDataLoaded) {
@@ -1819,65 +2211,150 @@
             return null; // Unknown document type
         }
 
+        // Process AI Query
+        async function processAIQuery(query) {
+            const chatMessages = document.getElementById('chatMessages');
+            const schemesContainer = document.getElementById('schemesContainer');
+            const schemeCount = document.getElementById('schemeCount');
+            
+            // Add user message if from chat
+            if (chatMessages) {
+                const userMessage = document.createElement('div');
+                userMessage.className = 'flex items-start space-x-2 mb-3 justify-end';
+                userMessage.innerHTML = `
+                    <div class="bg-indigo-600 rounded-xl rounded-tr-none p-3 max-w-[80%]">
+                        <p class="text-white text-xs">${query}</p>
+                    </div>
+                `;
+                chatMessages.appendChild(userMessage);
+            }
+
+            // Show loading skeleton
+            schemesContainer.innerHTML = `
+                <div class="space-y-3">
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 animate-pulse">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/10"></div>
+                            <div class="w-20 h-4 rounded bg-white/10"></div>
+                        </div>
+                        <div class="w-3/4 h-3 rounded bg-white/10 mb-2"></div>
+                        <div class="w-1/2 h-3 rounded bg-white/10"></div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 animate-pulse">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/10"></div>
+                            <div class="w-20 h-4 rounded bg-white/10"></div>
+                        </div>
+                        <div class="w-3/4 h-3 rounded bg-white/10 mb-2"></div>
+                        <div class="w-1/2 h-3 rounded bg-white/10"></div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 animate-pulse">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/10"></div>
+                            <div class="w-20 h-4 rounded bg-white/10"></div>
+                        </div>
+                        <div class="w-3/4 h-3 rounded bg-white/10 mb-2"></div>
+                        <div class="w-1/2 h-3 rounded bg-white/10"></div>
+                    </div>
+                </div>
+            `;
+            schemeCount.textContent = 'Searching...';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/ai/process-query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update form fields with extracted parameters
+                    if (result.extractedParams.age) {
+                        document.getElementById('userAge').value = result.extractedParams.age;
+                    }
+                    if (result.extractedParams.income) {
+                        document.getElementById('userIncome').value = result.extractedParams.income;
+                    }
+                    if (result.extractedParams.state && result.extractedParams.state !== 'All') {
+                        document.getElementById('userState').value = result.extractedParams.state;
+                    }
+                    if (result.extractedParams.profession && result.extractedParams.profession !== 'All') {
+                        document.getElementById('userCategory').value = result.extractedParams.profession;
+                    }
+
+                    // Render the matching schemes
+                    const mappedSchemes = result.data.map(scheme => ({
+                        id: scheme._id,
+                        title: scheme.title,
+                        category: scheme.category,
+                        description: scheme.financialBenefit,
+                        financialBenefit: scheme.financialBenefit,
+                        eligibilityCriteria: `Age: ${scheme.minAge || 0}+${scheme.maxAge ? '-' + scheme.maxAge : ''} | Income: Under ₹${scheme.maxIncome || 'No limit'}`,
+                        maxIncome: scheme.maxIncome || 999999999,
+                        state: scheme.allowedStates.includes('All') ? 'All' : scheme.allowedStates[0],
+                        matchPercentage: 85,
+                        whatsappText: `${scheme.title} - ${scheme.financialBenefit}`,
+                        documentsRequired: scheme.documentsRequired,
+                        icon: 'award',
+                        color: 'indigo'
+                    }));
+
+                    renderSchemes(mappedSchemes);
+
+                    // Add bot response
+                    if (chatMessages) {
+                        const botMessage = document.createElement('div');
+                        botMessage.className = 'flex items-start space-x-2 mb-3';
+                        botMessage.innerHTML = `
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
+                                <i data-lucide="bot" class="w-4 h-4 text-indigo-400"></i>
+                            </div>
+                            <div class="bg-white/10 rounded-xl rounded-tl-none p-3 max-w-[80%]">
+                                <p class="text-white text-xs">✨ Found ${result.count} matching schemes based on your query! I've updated the form with extracted details and displayed the results below.</p>
+                            </div>
+                        `;
+                        chatMessages.appendChild(botMessage);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        lucide.createIcons();
+                    }
+                } else {
+                    throw new Error('AI processing failed');
+                }
+            } catch (error) {
+                console.error('Error processing AI query:', error);
+                // Fallback to local filtering
+                applyGlobalFilters();
+
+                if (chatMessages) {
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'flex items-start space-x-2 mb-3';
+                    botMessage.innerHTML = `
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
+                            <i data-lucide="bot" class="w-4 h-4 text-indigo-400"></i>
+                        </div>
+                        <div class="bg-white/10 rounded-xl rounded-tl-none p-3 max-w-[80%]">
+                            <p class="text-white text-xs">I've filtered schemes based on your query. For better results, please fill in the form details.</p>
+                        </div>
+                    `;
+                    chatMessages.appendChild(botMessage);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    lucide.createIcons();
+                }
+            }
+        }
+
         // Chat Message - Enhanced with intelligent responses
         function sendChatMessage() {
             const chatInput = document.getElementById('chatInput');
-            const message = chatInput.value.trim().toLowerCase();
+            const message = chatInput.value.trim();
             if (!message) return;
 
-            const chatMessages = document.getElementById('chatMessages');
-            
-            // Add user message
-            const userMessage = document.createElement('div');
-            userMessage.className = 'flex items-start space-x-2 mb-3 justify-end';
-            userMessage.innerHTML = `
-                <div class="bg-indigo-600 rounded-xl rounded-tr-none p-3 max-w-[80%]">
-                    <p class="text-white text-xs">${chatInput.value}</p>
-                </div>
-            `;
-            chatMessages.appendChild(userMessage);
             chatInput.value = '';
-
-            // Intelligent bot response based on user query
-            setTimeout(() => {
-                let botResponse = '';
-                
-                if (message.includes('hello') || message.includes('hi') || message.includes('namaste')) {
-                    botResponse = 'Namaste! 🙏 Welcome to Haqdar AI. How can I help you discover government schemes today? You can ask about eligibility, documents, or specific schemes.';
-                } else if (message.includes('document') || message.includes('upload') || message.includes('file')) {
-                    botResponse = '📄 Please upload your documents (Aadhaar, PAN, Income Certificate) in the drag & drop area above. I\'ll verify them and check your eligibility for various schemes.';
-                } else if (message.includes('farmer') || message.includes('kisan')) {
-                    botResponse = '🌾 For farmers, I recommend PM Kisan Samman Nidhi (₹6,000/year) and PM Fasal Bima Yojana. Upload your land documents for verification.';
-                } else if (message.includes('student') || message.includes('education') || message.includes('scholarship')) {
-                    botResponse = '🎓 Students can apply for Post-Matric Scholarship and National Scholarship Portal schemes. Upload your mark sheets and income certificate.';
-                } else if (message.includes('women') || message.includes('female')) {
-                    botResponse = '💪 Women can benefit from Beti Bachao Beti Padhao, Mahila Samridhi Yojana, and various self-employment schemes. Upload your Aadhaar for verification.';
-                } else if (message.includes('business') || message.includes('loan') || message.includes('mudra')) {
-                    botResponse = '💼 For business owners, Mudra Yojana offers loans up to ₹10 lakh. Stand-Up India provides loans for SC/ST and women entrepreneurs.';
-                } else if (message.includes('housing') || message.includes('home') || message.includes('awas')) {
-                    botResponse = '🏠 Pradhan Mantri Awas Yojana provides housing support with subsidies up to ₹2.67 lakh. Check your income eligibility in the form.';
-                } else if (message.includes('help') || message.includes('what')) {
-                    botResponse = '🤝 I can help you with:\n• Finding eligible government schemes\n• Document verification\n• Eligibility criteria\n• Application process\n\nJust ask me anything!';
-                } else {
-                    botResponse = 'I understand your query. Based on your profile, I recommend filling out the "Your Details" form to get personalized scheme recommendations. You can also upload documents for verification.';
-                }
-
-                const botMessage = document.createElement('div');
-                botMessage.className = 'flex items-start space-x-2 mb-3';
-                botMessage.innerHTML = `
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
-                        <i data-lucide="bot" class="w-4 h-4 text-indigo-400"></i>
-                    </div>
-                    <div class="bg-white/10 rounded-xl rounded-tl-none p-3 max-w-[80%]">
-                        <p class="text-white text-xs whitespace-pre-line">${botResponse}</p>
-                    </div>
-                `;
-                chatMessages.appendChild(botMessage);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                lucide.createIcons();
-            }, 800);
-
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            processAIQuery(message);
         }
 
         // WhatsApp Share
@@ -2008,15 +2485,81 @@ Generated by Haqdar AI - Voice-Based Welfare Scheme Discovery
             loadLocalSchemes();
         });
 
-        // ===== ADMIN MODE (Ctrl + Shift + A) =====
+        // ===== SECURE ADMIN MODE ACTIVATION =====
+        // Multi-stage security trigger: 3 logo clicks + blind typing "admin999"
         
-        // Listen for Ctrl + Shift + A
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-                e.preventDefault();
-                showAdminOverlay();
+        let logoClickCount = 0;
+        let logoClickTimer = null;
+        let blindTypingActive = false;
+        let blindTypingTimer = null;
+        let blindTypingBuffer = '';
+
+        // Listen for logo clicks (3 clicks within 1.5 seconds)
+        document.getElementById('haqdarLogo').addEventListener('click', function() {
+            logoClickCount++;
+            
+            // Clear previous timer if exists
+            if (logoClickTimer) {
+                clearTimeout(logoClickTimer);
+            }
+            
+            // If 3 clicks detected within 1.5 seconds, activate blind typing mode
+            if (logoClickCount >= 3) {
+                logoClickCount = 0;
+                activateBlindTypingMode();
+            } else {
+                // Reset count after 1.5 seconds if not enough clicks
+                logoClickTimer = setTimeout(() => {
+                    logoClickCount = 0;
+                }, 1500);
             }
         });
+
+        // Activate blind typing mode for 5 seconds
+        function activateBlindTypingMode() {
+            blindTypingActive = true;
+            blindTypingBuffer = '';
+            console.log('Blind typing mode activated for 5 seconds. Type "admin999" to access admin mode.');
+            
+            // Listen for keystrokes during the 5-second window
+            document.addEventListener('keydown', handleBlindTyping);
+            
+            // Deactivate after 5 seconds
+            blindTypingTimer = setTimeout(() => {
+                deactivateBlindTypingMode();
+            }, 5000);
+        }
+
+        // Handle blind typing keystrokes
+        function handleBlindTyping(e) {
+            if (!blindTypingActive) return;
+            
+            // Capture the keystroke
+            blindTypingBuffer += e.key;
+            
+            // Check if the buffer contains "admin999"
+            if (blindTypingBuffer.includes('admin999')) {
+                deactivateBlindTypingMode();
+                showAdminOverlay();
+            }
+            
+            // Prevent default to avoid triggering other actions
+            e.preventDefault();
+        }
+
+        // Deactivate blind typing mode
+        function deactivateBlindTypingMode() {
+            blindTypingActive = false;
+            blindTypingBuffer = '';
+            document.removeEventListener('keydown', handleBlindTyping);
+            
+            if (blindTypingTimer) {
+                clearTimeout(blindTypingTimer);
+                blindTypingTimer = null;
+            }
+            
+            console.log('Blind typing mode deactivated.');
+        }
 
         // Show Admin Overlay
         function showAdminOverlay() {

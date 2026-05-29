@@ -1,52 +1,88 @@
 const mongoose = require('mongoose');
 
+/**
+ * Government Scheme Schema
+ * 
+ * Production-ready Mongoose schema for Government Welfare Schemes.
+ * Supports complex eligibility criteria for filtering and matching.
+ */
 const schemeSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    trim: true
+    required: [true, 'Scheme title is required'],
+    trim: true,
+    index: true
   },
-  description: {
+  category: {
     type: String,
-    required: true,
+    required: [true, 'Scheme category is required'],
+    trim: true,
+    enum: ['Agriculture', 'Education', 'Healthcare', 'Finance', 'Housing', 'Women', 'Senior Citizen', 'General'],
+    index: true
+  },
+  financialBenefit: {
+    type: String,
+    required: [true, 'Financial benefit description is required'],
     trim: true
   },
   minAge: {
     type: Number,
-    default: 0
+    default: 0,
+    min: [0, 'Minimum age cannot be negative']
   },
   maxAge: {
     type: Number,
-    default: null
+    default: null,
+    min: [0, 'Maximum age cannot be negative']
   },
   maxIncome: {
     type: Number,
-    default: null
+    default: null,
+    min: [0, 'Maximum income cannot be negative']
   },
-  genderEligibility: {
+  allowedStates: {
     type: [String],
-    enum: ['male', 'female', 'other', 'all'],
-    default: ['all']
+    default: ['All'],
+    validate: {
+      validator: function(states) {
+        return states.length > 0;
+      },
+      message: 'At least one state must be specified'
+    }
   },
-  casteEligibility: {
+  allowedProfessions: {
     type: [String],
-    default: []
+    default: ['All'],
+    validate: {
+      validator: function(professions) {
+        return professions.length > 0;
+      },
+      message: 'At least one profession must be specified'
+    }
   },
-  stateEligibility: {
+  documentsRequired: {
     type: [String],
-    default: []
+    default: [],
+    validate: {
+      validator: function(docs) {
+        return Array.isArray(docs);
+      },
+      message: 'Documents required must be an array'
+    }
   },
-  benefits: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  occupation: {
+  matchPercentageDescription: {
     type: String,
     trim: true
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
+
+// Indexes for better query performance
+schemeSchema.index({ allowedStates: 1 });
+schemeSchema.index({ maxIncome: 1 });
+schemeSchema.index({ minAge: 1, maxAge: 1 });
 
 module.exports = mongoose.model('Scheme', schemeSchema);
