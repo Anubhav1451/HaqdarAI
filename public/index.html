@@ -2720,72 +2720,74 @@ void main(void) {
             const displaySchemes = hasUserInteracted ? schemes : schemes.slice(0, 6);
             
             displaySchemes.forEach((scheme, index) => {
-                const timelineId = `timeline${index}`;
-                const timelineIconId = `${timelineId}-icon`;
-                const matchPercentage = calculateMatchPercentage(scheme);
-                
-                // Get match helper text
-                let matchHelperText = '';
-                if (matchPercentage === 100) {
-                    matchHelperText = '100% Match (Ready to Apply)';
-                } else if (matchPercentage >= 80) {
-                    matchHelperText = 'Highly Eligible (Documents Pending)';
-                } else {
-                    matchHelperText = 'Partial Criteria Match';
-                }
-
-                // Generate document tags with verification status using global state
-                const documentTags = scheme.documentsRequired.map(doc => {
-                    let isVerified = verifiedDocuments.has(doc);
+                try {
+                    const timelineId = `timeline${index}`;
+                    const timelineIconId = `${timelineId}-icon`;
+                    const matchPercentage = calculateMatchPercentage(scheme);
                     
-                    // Check global verification state for additional verification
-                    if (doc.includes('Income') && isIncomeVerified) isVerified = true;
-                    if (doc.includes('Aadhaar') && isAadharVerified) isVerified = true;
-                    if (doc.includes('PAN') && isPANVerified) isVerified = true;
-                    if (doc.includes('Bank') && isBankVerified) isVerified = true;
-                    if ((doc.includes('Residence') || doc.includes('Ration')) && isResidenceVerified) isVerified = true;
-                    
-                    const bgColor = isVerified ? 'bg-emerald-500/30 border-emerald-500/50 shadow-lg shadow-emerald-500/20' : 'bg-white/10 border-white/20';
-                    const textColor = isVerified ? 'text-emerald-400 font-semibold' : 'text-zinc-400';
-                    const checkIcon = isVerified ? '<i data-lucide="check" class="w-3 h-3 mr-1"></i>' : '';
-                    return `<span class="inline-flex items-center px-2 py-1 rounded-md text-xs border ${bgColor} ${textColor}">${checkIcon}${doc}</span>`;
-                }).join(' ');
+                    // Get match helper text
+                    let matchHelperText = '';
+                    if (matchPercentage === 100) {
+                        matchHelperText = '100% Match (Ready to Apply)';
+                    } else if (matchPercentage >= 80) {
+                        matchHelperText = 'Highly Eligible (Documents Pending)';
+                    } else {
+                        matchHelperText = 'Partial Criteria Match';
+                    }
 
-                schemesContainer.innerHTML += `
-                    <div class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-indigo-500/30 transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]">
-                        <div class="flex items-center justify-between mb-3">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
-                                    <i data-lucide="${scheme.icon}" class="w-6 h-6 text-${scheme.color}-400"></i>
+                    // Generate document tags with verification status using global state - with safety check
+                    const documentsRequired = Array.isArray(scheme.documentsRequired) ? scheme.documentsRequired : [];
+                    const documentTags = documentsRequired.map(doc => {
+                        let isVerified = verifiedDocuments.has(doc);
+                        
+                        // Check global verification state for additional verification
+                        if (doc.includes('Income') && isIncomeVerified) isVerified = true;
+                        if (doc.includes('Aadhaar') && isAadharVerified) isVerified = true;
+                        if (doc.includes('PAN') && isPANVerified) isVerified = true;
+                        if (doc.includes('Bank') && isBankVerified) isVerified = true;
+                        if ((doc.includes('Residence') || doc.includes('Ration')) && isResidenceVerified) isVerified = true;
+                        
+                        const bgColor = isVerified ? 'bg-emerald-500/30 border-emerald-500/50 shadow-lg shadow-emerald-500/20' : 'bg-white/10 border-white/20';
+                        const textColor = isVerified ? 'text-emerald-400 font-semibold' : 'text-zinc-400';
+                        const checkIcon = isVerified ? '<i data-lucide="check" class="w-3 h-3 mr-1"></i>' : '';
+                        return `<span class="inline-flex items-center px-2 py-1 rounded-md text-xs border ${bgColor} ${textColor}">${checkIcon}${doc}</span>`;
+                    }).join(' ');
+
+                    schemesContainer.innerHTML += `
+                        <div class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-indigo-500/30 transition-all duration-300 ease-out hover:scale-[1.015] active:scale-[0.98]">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3);">
+                                        <i data-lucide="${scheme.icon || 'award'}" class="w-6 h-6 text-${scheme.color || 'indigo'}-400"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-semibold text-sm">${scheme.title || scheme.name || 'Unknown Scheme'}</h4>
+                                        <p class="text-zinc-400 text-xs">${scheme.description || scheme.financialBenefit || 'No description available'}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 class="text-white font-semibold text-sm">${scheme.title}</h4>
-                                    <p class="text-zinc-400 text-xs">${scheme.description}</p>
+                                <div class="flex flex-col items-end space-y-1">
+                                    <span class="text-${scheme.color || 'indigo'}-400 font-bold text-xs bg-${scheme.color || 'indigo'}-500/10 px-2 py-1 rounded-lg font-mono">${matchPercentage}% Match</span>
+                                    <span class="text-zinc-500 text-xs">${matchHelperText}</span>
                                 </div>
                             </div>
-                            <div class="flex flex-col items-end space-y-1">
-                                <span class="text-${scheme.color}-400 font-bold text-xs bg-${scheme.color}-500/10 px-2 py-1 rounded-lg font-mono">${matchPercentage}% Match</span>
-                                <span class="text-zinc-500 text-xs">${matchHelperText}</span>
-                            </div>
-                        </div>
 
-                        <!-- Financial Benefit Block -->
-                        <div class="bg-white/5 rounded-lg p-3 mb-3">
-                            <div class="flex items-center space-x-2 mb-1">
-                                <i data-lucide="indian-rupee" class="w-3.5 h-3.5 text-emerald-400"></i>
-                                <span class="text-xs font-bold text-zinc-300">💰 Financial Benefit</span>
+                            <!-- Financial Benefit Block -->
+                            <div class="bg-white/5 rounded-lg p-3 mb-3">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <i data-lucide="indian-rupee" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                    <span class="text-xs font-bold text-zinc-300">💰 Financial Benefit</span>
+                                </div>
+                                <p class="text-xs text-white ml-5">${scheme.financialBenefit || scheme.benefits?.join(', ') || 'Not specified'}</p>
                             </div>
-                            <p class="text-xs text-white ml-5">${scheme.financialBenefit}</p>
-                        </div>
 
-                        <!-- Core Eligibility Block -->
-                        <div class="bg-white/5 rounded-lg p-3 mb-3">
-                            <div class="flex items-center space-x-2 mb-1">
-                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-400"></i>
-                                <span class="text-xs font-bold text-zinc-300">📊 Core Eligibility</span>
+                            <!-- Core Eligibility Block -->
+                            <div class="bg-white/5 rounded-lg p-3 mb-3">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-400"></i>
+                                    <span class="text-xs font-bold text-zinc-300">📊 Core Eligibility</span>
+                                </div>
+                                <p class="text-xs text-white ml-5">${scheme.eligibilityCriteria || 'Not specified'}</p>
                             </div>
-                            <p class="text-xs text-white ml-5">${scheme.eligibilityCriteria}</p>
-                        </div>
 
                         <!-- Action Documents Block -->
                         <div class="bg-white/5 rounded-lg p-3 mb-3">
@@ -2831,6 +2833,10 @@ void main(void) {
                         </div>
                     </div>
                 `;
+                } catch (error) {
+                    console.warn(`Error rendering scheme at index ${index}:`, error);
+                    // Continue to next scheme even if this one fails
+                }
             });
 
             // Show blur overlay if no user interaction and there are more than 6 schemes
