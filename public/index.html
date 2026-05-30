@@ -2609,7 +2609,17 @@ void main(void) {
         // Load government schemes from API
         async function loadLocalSchemes() {
             const loadingSkeleton = document.getElementById('loadingSkeleton');
-            const schemesContainer = document.getElementById('schemesContainer');
+            const schemesContainer = document.getElementById('eligibleSchemesContainer');
+
+            if (!loadingSkeleton) {
+                console.warn("Loading skeleton element not found in DOM");
+                return;
+            }
+
+            if (!schemesContainer) {
+                console.warn("Schemes container element not found in DOM");
+                return;
+            }
 
             try {
                 const response = await fetch('http://localhost:5000/api/schemes');
@@ -2671,9 +2681,19 @@ void main(void) {
 
         // Render schemes to the DOM
         function renderSchemes(schemes) {
-            const schemesContainer = document.getElementById('schemesContainer');
+            const schemesContainer = document.getElementById('eligibleSchemesContainer');
             const schemeCount = document.getElementById('schemeCount');
             const blurOverlay = document.getElementById('schemeBlurOverlay');
+
+            if (!schemesContainer) {
+                console.warn("Schemes container element not found in DOM");
+                return;
+            }
+
+            if (!schemeCount) {
+                console.warn("Scheme count element not found in DOM");
+                return;
+            }
 
             schemeCount.textContent = `${schemes.length} schemes found`;
 
@@ -3007,8 +3027,18 @@ void main(void) {
         // Process AI Query
         async function processAIQuery(query) {
             const chatMessages = document.getElementById('chatMessages');
-            const schemesContainer = document.getElementById('schemesContainer');
+            const schemesContainer = document.getElementById('eligibleSchemesContainer');
             const schemeCount = document.getElementById('schemeCount');
+
+            if (!schemesContainer) {
+                console.warn("Schemes container element not found in DOM in processAIQuery");
+                return;
+            }
+
+            if (!schemeCount) {
+                console.warn("Scheme count element not found in DOM in processAIQuery");
+                return;
+            }
             
             // Add user message if from chat
             if (chatMessages) {
