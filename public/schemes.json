@@ -18,7 +18,8 @@
         "max_income": null,
         "profession": ["Farmer"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://pmkisan.gov.in/"
     },
     {
       "id": "pmay",
@@ -38,7 +39,8 @@
         "max_income": 1800000,
         "profession": ["All"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://pmaymis.gov.in/"
     },
     {
       "id": "pm-mudra",
@@ -58,7 +60,8 @@
         "max_income": null,
         "profession": ["Business Owner", "All"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://www.mudra.org.in/"
     },
     {
       "id": "post-matric",
@@ -78,7 +81,8 @@
         "max_income": 250000,
         "profession": ["Student"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://www.myscheme.gov.in/schemes/post-matric-scholarship"
     },
     {
       "id": "sukanya",
@@ -98,7 +102,8 @@
         "max_income": null,
         "profession": ["All"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://www.myscheme.gov.in/schemes/ssy"
     },
     {
       "id": "ayushman",
@@ -118,7 +123,8 @@
         "max_income": 500000,
         "profession": ["All"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://pmjay.gov.in/"
     },
     {
       "id": "pm-kisan-mp",
@@ -138,7 +144,8 @@
         "max_income": null,
         "profession": ["Farmer"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://pmkisan.gov.in/"
     },
     {
       "id": "national-scholarship",
@@ -158,7 +165,8 @@
         "max_income": 800000,
         "profession": ["Student"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://scholarships.gov.in/"
     },
     {
       "id": "stand-up-india",
@@ -178,7 +186,8 @@
         "max_income": null,
         "profession": ["Business Owner"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://www.standupmitra.in/"
     },
     {
       "id": "pm-svaniidhi",
@@ -198,7 +207,8 @@
         "max_income": 15000,
         "profession": ["Business Owner"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://pmsvanidhi.mohua.gov.in/"
     },
     {
       "id": "atal-pension",
@@ -218,7 +228,8 @@
         "max_income": null,
         "profession": ["All"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://www.myscheme.gov.in/schemes/atal-pension-yojana"
     },
     {
       "id": "pm-ujjwala",
@@ -238,7 +249,8 @@
         "max_income": 100000,
         "profession": ["All"],
         "state": ["All"]
-      }
+      },
+      "official_url": "https://www.myscheme.gov.in/schemes/pradhan-mantri-ujjwala-yojana"
     }
   ]
 }

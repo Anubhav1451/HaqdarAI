@@ -170,7 +170,7 @@ const getLiveSchemes = async (req, res) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     // System prompt for live scheme search
-    const systemPrompt = `You are the core intelligence of Haqdar AI. Analyze the user's profile and instantly find 5 to 7 REAL, active Indian Government welfare schemes they qualify for. Return the output strictly as a valid raw JSON array containing these fields: id, name, ministry, description, benefits (array), eligibility_reason. Do not include markdown backticks or explanations.`;
+    const systemPrompt = `You are the core intelligence of Haqdar AI. Analyze the user's profile and instantly find 5 to 7 REAL, active Indian Government welfare schemes they qualify for. Return the output strictly as a valid raw JSON array containing these fields: id, name, ministry, description, benefits (array), eligibility_reason, official_url. The official_url field MUST contain a valid, real government website URL (e.g., https://pmkisan.gov.in/, https://pmaymis.gov.in/, https://www.myscheme.gov.in/). Do not leave official_url blank or null. Do not include markdown backticks or explanations.`;
 
     // Build user profile string
     const userProfile = `User Profile:

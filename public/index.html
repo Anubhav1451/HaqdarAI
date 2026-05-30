@@ -1736,6 +1736,8 @@ void main(void) {
                     schemeCard.style.gridColumn = 'span 6';
                 }
                 
+                const urlToUse = scheme.official_url || 'https://www.myscheme.gov.in/';
+                
                 schemeCard.innerHTML = `
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem;">
                         <div style="flex: 1;">
@@ -1765,7 +1767,7 @@ void main(void) {
                     </div>
                     
                     <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
-                        <button onclick="applyForScheme('${scheme.id}')" style="flex: 1; padding: 0.5rem 1rem; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #ffffff; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);">Apply Now</button>
+                        <button onclick="window.open('${urlToUse}', '_blank')" style="flex: 1; padding: 0.5rem 1rem; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #000000; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);">Apply on Official Portal ➔</button>
                         <button onclick="shareOnWhatsApp('${scheme.id}')" style="padding: 0.5rem 1rem; background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.3s ease;">Share</button>
                     </div>
                 `;
