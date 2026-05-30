@@ -1674,7 +1674,7 @@ void main(void) {
             });
         }
 
-        // Render schemes in the bento grid with smooth fade-in transitions
+        // Render schemes in the bento grid with explicit inline CSS for visibility
         function renderSchemes(schemesToRender) {
             const schemesContainer = document.getElementById('eligibleSchemesContainer');
             const schemeCount = document.getElementById('schemeCount');
@@ -1687,17 +1687,22 @@ void main(void) {
                 loadingSkeleton.classList.add('hidden');
             }
             
-            // Show schemes container
+            // Show schemes container with explicit styles
             schemesContainer.classList.remove('hidden');
+            schemesContainer.style.display = 'grid';
+            schemesContainer.style.gridTemplateColumns = 'repeat(12, minmax(0, 1fr))';
+            schemesContainer.style.gap = '1rem';
+            schemesContainer.style.visibility = 'visible';
+            schemesContainer.style.opacity = '1';
             
             schemeCount.textContent = `${schemesToRender.length} schemes found`;
             
             if (schemesToRender.length === 0) {
                 schemesContainer.innerHTML = `
-                    <div class="bento-item col-span-12 text-center py-12 animate-entry">
-                        <i data-lucide="search-x" class="w-16 h-16 text-zinc-400 mx-auto mb-4"></i>
-                        <h3 class="text-xl font-bold text-zinc-100 mb-2">No matching schemes found</h3>
-                        <p class="text-zinc-400">Try adjusting your criteria to find eligible schemes</p>
+                    <div style="grid-column: span 12; text-align: center; padding: 3rem; background: rgba(20, 20, 35, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; color: #ffffff;">
+                        <i data-lucide="search-x" style="width: 64px; height: 64px; color: rgba(255, 255, 255, 0.4); margin: 0 auto 1rem;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">No matching schemes found</h3>
+                        <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">Try adjusting your criteria to find eligible schemes</p>
                     </div>
                 `;
                 lucide.createIcons();
@@ -1707,34 +1712,50 @@ void main(void) {
             // Clear existing content
             schemesContainer.innerHTML = '';
             
-            // Add schemes with staggered fade-in animation
+            // Add schemes with explicit inline styles
             schemesToRender.forEach((scheme, index) => {
                 const schemeCard = document.createElement('div');
-                schemeCard.className = 'bento-item col-span-12 lg:col-span-6';
+                schemeCard.style.gridColumn = 'span 12';
+                schemeCard.style.background = 'rgba(20, 20, 35, 0.95)';
+                schemeCard.style.backdropFilter = 'blur(12px)';
+                schemeCard.style.webkitBackdropFilter = 'blur(12px)';
+                schemeCard.style.border = '1px solid rgba(0, 242, 254, 0.4)';
+                schemeCard.style.borderRadius = '16px';
+                schemeCard.style.padding = '1.5rem';
+                schemeCard.style.margin = '0';
+                schemeCard.style.display = 'block';
+                schemeCard.style.visibility = 'visible';
                 schemeCard.style.opacity = '0';
-                schemeCard.style.transform = 'translateY(20px)';
+                schemeCard.style.color = '#ffffff';
+                schemeCard.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.5)';
                 schemeCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                schemeCard.style.transform = 'translateY(20px)';
+                
+                // Responsive grid layout
+                if (window.innerWidth >= 1024) {
+                    schemeCard.style.gridColumn = 'span 6';
+                }
                 
                 schemeCard.innerHTML = `
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-bold text-white mb-2">${scheme.name}</h4>
-                            <p class="text-xs text-zinc-400 mb-3">${scheme.ministry || 'Government of India'}</p>
-                            <p class="text-sm text-zinc-300 mb-4">${scheme.description}</p>
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem;">
+                        <div style="flex: 1;">
+                            <h4 style="font-size: 1.125rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">${scheme.name}</h4>
+                            <p style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.75rem;">${scheme.ministry || 'Government of India'}</p>
+                            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem; line-height: 1.5;">${scheme.description}</p>
                             
                             ${scheme.eligibility_reason ? `
-                            <div class="mb-4 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
-                                <h5 class="text-xs font-semibold text-indigo-400 mb-1 uppercase tracking-wider">Why You Qualify</h5>
-                                <p class="text-xs text-zinc-300">${scheme.eligibility_reason}</p>
+                            <div style="margin-bottom: 1rem; padding: 0.75rem; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 0.5rem;">
+                                <h5 style="font-size: 0.75rem; font-weight: 600; color: rgba(99, 102, 241, 1); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em;">Why You Qualify</h5>
+                                <p style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.9);">${scheme.eligibility_reason}</p>
                             </div>
                             ` : ''}
                             
-                            <div class="mb-4">
-                                <h5 class="text-xs font-semibold text-indigo-400 mb-2 uppercase tracking-wider">Benefits</h5>
-                                <ul class="space-y-1">
+                            <div style="margin-bottom: 1rem;">
+                                <h5 style="font-size: 0.75rem; font-weight: 600; color: rgba(99, 102, 241, 1); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Benefits</h5>
+                                <ul style="list-style: none; padding: 0; margin: 0;">
                                     ${scheme.benefits.map(benefit => `
-                                        <li class="text-xs text-zinc-300 flex items-start">
-                                            <i data-lucide="check-circle" class="w-3 h-3 mr-2 mt-0.5 text-emerald-400 flex-shrink-0"></i>
+                                        <li style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.9); display: flex; align-items: flex-start; margin-bottom: 0.25rem;">
+                                            <span style="color: #34d399; margin-right: 0.5rem; margin-top: 0.125rem;">✓</span>
                                             ${benefit}
                                         </li>
                                     `).join('')}
@@ -1743,13 +1764,9 @@ void main(void) {
                         </div>
                     </div>
                     
-                    <div class="flex gap-3 mt-4">
-                        <button onclick="applyForScheme('${scheme.id}')" class="flex-1 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-indigo-500/25">
-                            Apply Now
-                        </button>
-                        <button onclick="shareOnWhatsApp('${scheme.id}')" class="px-4 py-2 bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105">
-                            <i data-lucide="share-2" class="w-4 h-4"></i>
-                        </button>
+                    <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                        <button onclick="applyForScheme('${scheme.id}')" style="flex: 1; padding: 0.5rem 1rem; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #ffffff; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);">Apply Now</button>
+                        <button onclick="shareOnWhatsApp('${scheme.id}')" style="padding: 0.5rem 1rem; background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.3s ease;">Share</button>
                     </div>
                 `;
                 
