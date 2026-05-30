@@ -153,6 +153,78 @@ const processUnstructuredQuery = async (req, res) => {
   }
 };
 
+const getLiveSchemes = async (req, res) => {
+  try {
+    const { age, gender, income, profession, state } = req.body;
+
+    // Input validation
+    if (!age && !income && !profession && !state) {
+      return res.status(400).json({
+        success: false,
+        error: 'At least one demographic parameter is required'
+      });
+    }
+
+    // Initialize Google Gen AI SDK
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+    // System prompt for live scheme search
+    const systemPrompt = `You are the core intelligence of Haqdar AI. Analyze the user's profile and instantly find 5 to 7 REAL, active Indian Government welfare schemes they qualify for. Return the output strictly as a valid raw JSON array containing these fields: id, name, ministry, description, benefits (array), eligibility_reason. Do not include markdown backticks or explanations.`;
+
+    // Build user profile string
+    const userProfile = `User Profile:
+- Age: ${age || 'Not specified'}
+- Gender: ${gender || 'Not specified'}
+- Annual Income: ₹${income || 'Not specified'}
+- Profession: ${profession || 'Not specified'}
+- State: ${state || 'Not specified'}`;
+
+    // Send profile to Gemini
+    const prompt = `${systemPrompt}\n\n${userProfile}`;
+    const result = await model.generateContent(prompt, {
+      generationConfig: {
+        maxOutputTokens: 2000,
+        temperature: 0.7
+      }
+    });
+    const response = await result.response;
+    const responseText = response.text();
+
+    // Parse JSON response
+    let schemes;
+    try {
+      // Clean the response text to remove any markdown code blocks
+      const cleanText = responseText.replace(/```json\n?|\n?```/g, '').trim();
+      schemes = JSON.parse(cleanText);
+      
+      // Ensure it's an array
+      if (!Array.isArray(schemes)) {
+        throw new Error('Response is not an array');
+      }
+    } catch (parseError) {
+      console.error('Error parsing AI response:', parseError);
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to parse AI response'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      count: schemes.length,
+      data: schemes
+    });
+  } catch (error) {
+    console.error('Error getting live schemes:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error while fetching live schemes'
+    });
+  }
+};
+
 module.exports = {
-  processUnstructuredQuery
+  processUnstructuredQuery,
+  getLiveSchemes
 };

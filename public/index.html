@@ -79,6 +79,116 @@
             animation-delay: 0.8s;
         }
 
+        /* AI Loading Animation */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), 0 0 40px rgba(139, 92, 246, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(99, 102, 241, 0.5), 0 0 60px rgba(139, 92, 246, 0.4);
+            }
+        }
+
+        @keyframes spin-slow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ai-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 10, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fade-in 0.3s ease-out;
+        }
+
+        .ai-loading-content {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3), 0 0 60px rgba(139, 92, 246, 0.2);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .ai-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(99, 102, 241, 0.2);
+            border-top-color: rgba(99, 102, 241, 0.8);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            animation: spin-slow 1s linear infinite;
+        }
+
+        .ai-loading-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-loading-subtext {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .ai-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .ai-dot {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .ai-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .ai-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .ai-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         /* Premium Glassmorphism Effect */
         .glass {
             background: rgba(10, 10, 15, 0.7);
@@ -582,6 +692,20 @@
 <body class="min-h-screen text-white">
     <!-- Animated Shader Hero Canvas -->
     <canvas id="shader-hero-canvas"></canvas>
+    
+    <!-- AI Loading Overlay -->
+    <div id="aiLoadingOverlay" class="ai-loading-overlay hidden">
+        <div class="ai-loading-content">
+            <div class="ai-spinner"></div>
+            <div class="ai-loading-text">AI Processing</div>
+            <div class="ai-loading-subtext">Finding personalized schemes for you...</div>
+            <div class="ai-dots">
+                <div class="ai-dot"></div>
+                <div class="ai-dot"></div>
+                <div class="ai-dot"></div>
+            </div>
+        </div>
+    </div>
     
     <!-- Hero Content Overlay -->
     <div id="hero-content" class="absolute inset-0 z-10 flex flex-col items-center justify-center text-white">
@@ -1550,7 +1674,7 @@ void main(void) {
             });
         }
 
-        // Render schemes in the bento grid
+        // Render schemes in the bento grid with smooth fade-in transitions
         function renderSchemes(schemesToRender) {
             const schemesContainer = document.getElementById('eligibleSchemesContainer');
             const schemeCount = document.getElementById('schemeCount');
@@ -1570,7 +1694,7 @@ void main(void) {
             
             if (schemesToRender.length === 0) {
                 schemesContainer.innerHTML = `
-                    <div class="bento-item col-span-12 text-center py-12">
+                    <div class="bento-item col-span-12 text-center py-12 animate-entry">
                         <i data-lucide="search-x" class="w-16 h-16 text-zinc-400 mx-auto mb-4"></i>
                         <h3 class="text-xl font-bold text-zinc-100 mb-2">No matching schemes found</h3>
                         <p class="text-zinc-400">Try adjusting your criteria to find eligible schemes</p>
@@ -1580,13 +1704,30 @@ void main(void) {
                 return;
             }
             
-            schemesContainer.innerHTML = schemesToRender.map((scheme, index) => `
-                <div class="bento-item col-span-12 lg:col-span-6 animate-entry" style="animation-delay: ${index * 0.1}s">
+            // Clear existing content
+            schemesContainer.innerHTML = '';
+            
+            // Add schemes with staggered fade-in animation
+            schemesToRender.forEach((scheme, index) => {
+                const schemeCard = document.createElement('div');
+                schemeCard.className = 'bento-item col-span-12 lg:col-span-6';
+                schemeCard.style.opacity = '0';
+                schemeCard.style.transform = 'translateY(20px)';
+                schemeCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                schemeCard.innerHTML = `
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex-1">
                             <h4 class="text-lg font-bold text-white mb-2">${scheme.name}</h4>
-                            <p class="text-xs text-zinc-400 mb-3">${scheme.ministry}</p>
+                            <p class="text-xs text-zinc-400 mb-3">${scheme.ministry || 'Government of India'}</p>
                             <p class="text-sm text-zinc-300 mb-4">${scheme.description}</p>
+                            
+                            ${scheme.eligibility_reason ? `
+                            <div class="mb-4 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
+                                <h5 class="text-xs font-semibold text-indigo-400 mb-1 uppercase tracking-wider">Why You Qualify</h5>
+                                <p class="text-xs text-zinc-300">${scheme.eligibility_reason}</p>
+                            </div>
+                            ` : ''}
                             
                             <div class="mb-4">
                                 <h5 class="text-xs font-semibold text-indigo-400 mb-2 uppercase tracking-wider">Benefits</h5>
@@ -1610,8 +1751,16 @@ void main(void) {
                             <i data-lucide="share-2" class="w-4 h-4"></i>
                         </button>
                     </div>
-                </div>
-            `).join('');
+                `;
+                
+                schemesContainer.appendChild(schemeCard);
+                
+                // Trigger fade-in animation with staggered delay
+                setTimeout(() => {
+                    schemeCard.style.opacity = '1';
+                    schemeCard.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
             
             lucide.createIcons();
         }
@@ -1646,11 +1795,57 @@ void main(void) {
             return { age, gender, income, profession, state };
         }
 
-        // Apply global filters (called from existing form)
-        function applyGlobalFilters() {
+        // Apply global filters (called from existing form) - Now uses Live AI Search
+        async function applyGlobalFilters() {
             const userProfile = getUserProfile();
-            const matchedSchemes = matchUserWithSchemes(userProfile);
-            renderSchemes(matchedSchemes);
+            
+            // Show AI loading animation
+            showAILoadingAnimation();
+            
+            try {
+                const response = await fetch('/api/ai/live-schemes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userProfile)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    renderSchemes(result.data);
+                } else {
+                    console.error('AI search failed:', result.error);
+                    // Fallback to local filtering if AI fails
+                    const matchedSchemes = matchUserWithSchemes(userProfile);
+                    renderSchemes(matchedSchemes);
+                }
+            } catch (error) {
+                console.error('Error calling AI endpoint:', error);
+                // Fallback to local filtering if API call fails
+                const matchedSchemes = matchUserWithSchemes(userProfile);
+                renderSchemes(matchedSchemes);
+            }
+            
+            // Hide AI loading animation
+            hideAILoadingAnimation();
+        }
+
+        // Show AI loading animation
+        function showAILoadingAnimation() {
+            const overlay = document.getElementById('aiLoadingOverlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        // Hide AI loading animation
+        function hideAILoadingAnimation() {
+            const overlay = document.getElementById('aiLoadingOverlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+            }
         }
 
         // Initialize schemes on load
