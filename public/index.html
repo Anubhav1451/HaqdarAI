@@ -1149,7 +1149,7 @@
                     </div>
                     
                     <!-- Schemes Container -->
-                    <div class="space-y-3 hidden" id="schemesContainer">
+                    <div class="bento-grid hidden" id="eligibleSchemesContainer">
                         <!-- Dynamic schemes will be rendered here -->
                     </div>
                     
@@ -1400,6 +1400,265 @@ void main(void) {
                 heroContent.style.display = 'none';
             }
         });
+
+        // Scheme Matching System
+        let allSchemes = [];
+
+        // Load schemes from JSON file
+        async function loadSchemes() {
+            try {
+                const response = await fetch('/schemes.json');
+                if (!response.ok) throw new Error('Failed to fetch schemes');
+                const data = await response.json();
+                allSchemes = data.schemes;
+                console.log('Loaded', allSchemes.length, 'schemes');
+                renderSchemes(allSchemes);
+            } catch (error) {
+                console.error('Error loading schemes:', error);
+                // Fallback to hardcoded schemes if fetch fails
+                allSchemes = getFallbackSchemes();
+                renderSchemes(allSchemes);
+            }
+        }
+
+        // Fallback schemes in case JSON loading fails
+        function getFallbackSchemes() {
+            return [
+                {
+                    id: "pm-kisan",
+                    name: "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+                    ministry: "Ministry of Agriculture & Farmers' Welfare",
+                    description: "Income support of ₹6,000 per year to all farmer families across the country in three equal installments.",
+                    benefits: ["Financial aid of ₹6,000/year", "Direct bank transfer in 3 installments"],
+                    eligibility: { age_min: 18, age_max: null, gender: ["All"], max_income: null, profession: ["Farmer"], state: ["All"] }
+                },
+                {
+                    id: "pmay",
+                    name: "Pradhan Mantri Awas Yojana (PMAY)",
+                    ministry: "Ministry of Housing and Urban Affairs",
+                    description: "Housing for All initiative providing financial assistance for construction of houses to eligible beneficiaries.",
+                    benefits: ["Subsidy up to ₹2.67 lakh for home construction", "Interest subsidy on home loans"],
+                    eligibility: { age_min: 18, age_max: null, gender: ["All"], max_income: 1800000, profession: ["All"], state: ["All"] }
+                },
+                {
+                    id: "pm-mudra",
+                    name: "Pradhan Mantri Mudra Yojana (PMMY)",
+                    ministry: "Ministry of Finance",
+                    description: "Loans up to ₹10 lakh to non-corporate, non-farm small/micro enterprises.",
+                    benefits: ["Loans up to ₹10 lakh", "No collateral required for loans up to ₹50,000"],
+                    eligibility: { age_min: 18, age_max: null, gender: ["All"], max_income: null, profession: ["Business Owner", "All"], state: ["All"] }
+                },
+                {
+                    id: "post-matric",
+                    name: "Post-Matric Scholarship for Minorities",
+                    ministry: "Ministry of Minority Affairs",
+                    description: "Scholarship for meritorious students from minority communities for post-matric studies.",
+                    benefits: ["Full course fee coverage", "Maintenance allowance"],
+                    eligibility: { age_min: null, age_max: null, gender: ["All"], max_income: 250000, profession: ["Student"], state: ["All"] }
+                },
+                {
+                    id: "sukanya",
+                    name: "Sukanya Samriddhi Yojana (SSY)",
+                    ministry: "Ministry of Finance",
+                    description: "Savings scheme for girl child with high interest rate and tax benefits.",
+                    benefits: ["8.2% annual interest rate", "Tax exemption under Section 80C"],
+                    eligibility: { age_min: 0, age_max: 10, gender: ["Female"], max_income: null, profession: ["All"], state: ["All"] }
+                },
+                {
+                    id: "ayushman",
+                    name: "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (AB-PMJAY)",
+                    ministry: "Ministry of Health and Family Welfare",
+                    description: "Health insurance scheme providing coverage of ₹5 lakh per family per year for secondary and tertiary care hospitalization.",
+                    benefits: ["Health coverage of ₹5 lakh/family/year", "Cashless hospitalization"],
+                    eligibility: { age_min: null, age_max: null, gender: ["All"], max_income: 500000, profession: ["All"], state: ["All"] }
+                },
+                {
+                    id: "pm-kisan-mp",
+                    name: "PM Kisan Maan Dhan Yojana",
+                    ministry: "Ministry of Agriculture & Farmers' Welfare",
+                    description: "Pension scheme for small and marginal farmers providing minimum monthly pension of ₹3,000.",
+                    benefits: ["Minimum pension of ₹3,000/month", "Government contribution: ₹3,000/month"],
+                    eligibility: { age_min: 18, age_max: 40, gender: ["All"], max_income: null, profession: ["Farmer"], state: ["All"] }
+                },
+                {
+                    id: "national-scholarship",
+                    name: "National Scholarship Portal",
+                    ministry: "Ministry of Electronics and Information Technology",
+                    description: "Centralized platform for various scholarship schemes for students from different categories.",
+                    benefits: ["Multiple scholarship schemes", "Centralized application process"],
+                    eligibility: { age_min: null, age_max: null, gender: ["All"], max_income: 800000, profession: ["Student"], state: ["All"] }
+                },
+                {
+                    id: "stand-up-india",
+                    name: "Stand Up India Scheme",
+                    ministry: "Ministry of Finance",
+                    description: "Loans for SC/ST and women entrepreneurs for greenfield enterprises.",
+                    benefits: ["Loans from ₹10 lakh to ₹1 crore", "75% guarantee coverage"],
+                    eligibility: { age_min: 18, age_max: null, gender: ["Female", "All"], max_income: null, profession: ["Business Owner"], state: ["All"] }
+                },
+                {
+                    id: "pm-svaniidhi",
+                    name: "PM SVANidhi",
+                    ministry: "Ministry of Housing and Urban Affairs",
+                    description: "Micro-credit facility to street vendors to restart their businesses affected by COVID-19 lockdown.",
+                    benefits: ["Initial working capital of ₹10,000", "Interest subsidy on timely repayment"],
+                    eligibility: { age_min: 18, age_max: null, gender: ["All"], max_income: 15000, profession: ["Business Owner"], state: ["All"] }
+                },
+                {
+                    id: "atal-pension",
+                    name: "Atal Pension Yojana (APY)",
+                    ministry: "Ministry of Finance",
+                    description: "Pension scheme for unorganized sector workers providing guaranteed minimum pension.",
+                    benefits: ["Guaranteed minimum pension", "Pension options: ₹1,000-5,000/month"],
+                    eligibility: { age_min: 18, age_max: 40, gender: ["All"], max_income: null, profession: ["All"], state: ["All"] }
+                },
+                {
+                    id: "pm-ujjwala",
+                    name: "Pradhan Mantri Ujjwala Yojana (PMUY)",
+                    ministry: "Ministry of Petroleum and Natural Gas",
+                    description: "Providing LPG connections to BPL households to replace traditional cooking fuels.",
+                    benefits: ["Free LPG connection", "Stove and first refill free"],
+                    eligibility: { age_min: 18, age_max: null, gender: ["Female"], max_income: 100000, profession: ["All"], state: ["All"] }
+                }
+            ];
+        }
+
+        // Match user profile with schemes
+        function matchUserWithSchemes(userProfile) {
+            const { age, gender, income, profession, state } = userProfile;
+            
+            return allSchemes.filter(scheme => {
+                const eligibility = scheme.eligibility;
+                
+                // Check age
+                if (eligibility.age_min && age < eligibility.age_min) return false;
+                if (eligibility.age_max && age > eligibility.age_max) return false;
+                
+                // Check gender
+                if (!eligibility.gender.includes("All") && !eligibility.gender.includes(gender)) return false;
+                
+                // Check income
+                if (eligibility.max_income && income > eligibility.max_income) return false;
+                
+                // Check profession
+                if (!eligibility.profession.includes("All") && !eligibility.profession.includes(profession)) return false;
+                
+                // Check state
+                if (!eligibility.state.includes("All") && !eligibility.state.includes(state)) return false;
+                
+                return true;
+            });
+        }
+
+        // Render schemes in the bento grid
+        function renderSchemes(schemesToRender) {
+            const schemesContainer = document.getElementById('eligibleSchemesContainer');
+            const schemeCount = document.getElementById('schemeCount');
+            const loadingSkeleton = document.getElementById('loadingSkeleton');
+            
+            if (!schemesContainer) return;
+            
+            // Hide loading skeleton
+            if (loadingSkeleton) {
+                loadingSkeleton.classList.add('hidden');
+            }
+            
+            // Show schemes container
+            schemesContainer.classList.remove('hidden');
+            
+            schemeCount.textContent = `${schemesToRender.length} schemes found`;
+            
+            if (schemesToRender.length === 0) {
+                schemesContainer.innerHTML = `
+                    <div class="bento-item col-span-12 text-center py-12">
+                        <i data-lucide="search-x" class="w-16 h-16 text-zinc-400 mx-auto mb-4"></i>
+                        <h3 class="text-xl font-bold text-zinc-100 mb-2">No matching schemes found</h3>
+                        <p class="text-zinc-400">Try adjusting your criteria to find eligible schemes</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            schemesContainer.innerHTML = schemesToRender.map((scheme, index) => `
+                <div class="bento-item col-span-12 lg:col-span-6 animate-entry" style="animation-delay: ${index * 0.1}s">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-white mb-2">${scheme.name}</h4>
+                            <p class="text-xs text-zinc-400 mb-3">${scheme.ministry}</p>
+                            <p class="text-sm text-zinc-300 mb-4">${scheme.description}</p>
+                            
+                            <div class="mb-4">
+                                <h5 class="text-xs font-semibold text-indigo-400 mb-2 uppercase tracking-wider">Benefits</h5>
+                                <ul class="space-y-1">
+                                    ${scheme.benefits.map(benefit => `
+                                        <li class="text-xs text-zinc-300 flex items-start">
+                                            <i data-lucide="check-circle" class="w-3 h-3 mr-2 mt-0.5 text-emerald-400 flex-shrink-0"></i>
+                                            ${benefit}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="applyForScheme('${scheme.id}')" class="flex-1 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-indigo-500/25">
+                            Apply Now
+                        </button>
+                        <button onclick="shareOnWhatsApp('${scheme.id}')" class="px-4 py-2 bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105">
+                            <i data-lucide="share-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        // Apply for scheme
+        function applyForScheme(schemeId) {
+            const scheme = allSchemes.find(s => s.id === schemeId);
+            if (!scheme) return;
+            
+            alert(`Application initiated for: ${scheme.name}\n\nYou will be redirected to the official application portal.`);
+            // In production, redirect to actual application URL
+        }
+
+        // Share on WhatsApp
+        function shareOnWhatsApp(schemeId) {
+            const scheme = allSchemes.find(s => s.id === schemeId);
+            if (!scheme) return;
+            
+            const text = `Check out this government scheme: ${scheme.name}\n\n${scheme.description}\n\nBenefits: ${scheme.benefits.join(', ')}`;
+            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        // Get user profile from form
+        function getUserProfile() {
+            const age = parseInt(document.getElementById('userAge')?.value) || 0;
+            const gender = 'All'; // Default to All since gender field doesn't exist in form
+            const income = parseInt(document.getElementById('userIncome')?.value) || 0;
+            const profession = document.getElementById('userCategory')?.value || 'All';
+            const state = document.getElementById('userState')?.value || 'All';
+            
+            return { age, gender, income, profession, state };
+        }
+
+        // Apply global filters (called from existing form)
+        function applyGlobalFilters() {
+            const userProfile = getUserProfile();
+            const matchedSchemes = matchUserWithSchemes(userProfile);
+            renderSchemes(matchedSchemes);
+        }
+
+        // Initialize schemes on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadSchemes);
+        } else {
+            loadSchemes();
+        }
 
         // Voice Assistant Toggle with Web Speech API - Re-engineered
         let isVoiceActive = false;
@@ -1828,7 +2087,6 @@ void main(void) {
             }
         ];
 
-        let allSchemes = [];
         let isDataLoaded = false;
         let hasUserInteracted = false;
         let verifiedDocuments = new Set(); // Track verified documents

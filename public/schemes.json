@@ -1,0 +1,244 @@
+{
+  "schemes": [
+    {
+      "id": "pm-kisan",
+      "name": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+      "ministry": "Ministry of Agriculture & Farmers' Welfare",
+      "description": "Income support of ₹6,000 per year to all farmer families across the country in three equal installments.",
+      "benefits": [
+        "Financial aid of ₹6,000/year",
+        "Direct bank transfer in 3 installments",
+        "No application fee",
+        "Covers all farmer families"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": null,
+        "gender": ["All"],
+        "max_income": null,
+        "profession": ["Farmer"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "pmay",
+      "name": "Pradhan Mantri Awas Yojana (PMAY)",
+      "ministry": "Ministry of Housing and Urban Affairs",
+      "description": "Housing for All initiative providing financial assistance for construction of houses to eligible beneficiaries.",
+      "benefits": [
+        "Subsidy up to ₹2.67 lakh for home construction",
+        "Interest subsidy on home loans",
+        "Coverage for urban and rural areas",
+        "Direct benefit transfer"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": null,
+        "gender": ["All"],
+        "max_income": 1800000,
+        "profession": ["All"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "pm-mudra",
+      "name": "Pradhan Mantri Mudra Yojana (PMMY)",
+      "ministry": "Ministry of Finance",
+      "description": "Loans up to ₹10 lakh to non-corporate, non-farm small/micro enterprises.",
+      "benefits": [
+        "Loans up to ₹10 lakh",
+        "No collateral required for loans up to ₹50,000",
+        "Three categories: Shishu, Kishore, Tarun",
+        "Low interest rates"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": null,
+        "gender": ["All"],
+        "max_income": null,
+        "profession": ["Business Owner", "All"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "post-matric",
+      "name": "Post-Matric Scholarship for Minorities",
+      "ministry": "Ministry of Minority Affairs",
+      "description": "Scholarship for meritorious students from minority communities for post-matric studies.",
+      "benefits": [
+        "Full course fee coverage",
+        "Maintenance allowance",
+        "Book allowance",
+        "Additional support for disabled students"
+      ],
+      "eligibility": {
+        "age_min": null,
+        "age_max": null,
+        "gender": ["All"],
+        "max_income": 250000,
+        "profession": ["Student"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "sukanya",
+      "name": "Sukanya Samriddhi Yojana (SSY)",
+      "ministry": "Ministry of Finance",
+      "description": "Savings scheme for girl child with high interest rate and tax benefits.",
+      "benefits": [
+        "8.2% annual interest rate",
+        "Tax exemption under Section 80C",
+        "Minimum deposit: ₹250/year",
+        "Maximum deposit: ₹1.5 lakh/year"
+      ],
+      "eligibility": {
+        "age_min": 0,
+        "age_max": 10,
+        "gender": ["Female"],
+        "max_income": null,
+        "profession": ["All"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "ayushman",
+      "name": "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (AB-PMJAY)",
+      "ministry": "Ministry of Health and Family Welfare",
+      "description": "Health insurance scheme providing coverage of ₹5 lakh per family per year for secondary and tertiary care hospitalization.",
+      "benefits": [
+        "Health coverage of ₹5 lakh/family/year",
+        "Cashless hospitalization",
+        "Pre and post-hospitalization expenses",
+        "No restriction on family size"
+      ],
+      "eligibility": {
+        "age_min": null,
+        "age_max": null,
+        "gender": ["All"],
+        "max_income": 500000,
+        "profession": ["All"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "pm-kisan-mp",
+      "name": "PM Kisan Maan Dhan Yojana",
+      "ministry": "Ministry of Agriculture & Farmers' Welfare",
+      "description": "Pension scheme for small and marginal farmers providing minimum monthly pension of ₹3,000.",
+      "benefits": [
+        "Minimum pension of ₹3,000/month",
+        "Government contribution: ₹3,000/month",
+        "Farmer contribution: ₹55-200/month",
+        "Pension after age 60"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": 40,
+        "gender": ["All"],
+        "max_income": null,
+        "profession": ["Farmer"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "national-scholarship",
+      "name": "National Scholarship Portal",
+      "ministry": "Ministry of Electronics and Information Technology",
+      "description": "Centralized platform for various scholarship schemes for students from different categories.",
+      "benefits": [
+        "Multiple scholarship schemes",
+        "Centralized application process",
+        "Direct benefit transfer",
+        "Track application status online"
+      ],
+      "eligibility": {
+        "age_min": null,
+        "age_max": null,
+        "gender": ["All"],
+        "max_income": 800000,
+        "profession": ["Student"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "stand-up-india",
+      "name": "Stand Up India Scheme",
+      "ministry": "Ministry of Finance",
+      "description": "Loans for SC/ST and women entrepreneurs for greenfield enterprises.",
+      "benefits": [
+        "Loans from ₹10 lakh to ₹1 crore",
+        "For SC/ST and women entrepreneurs",
+        "75% guarantee coverage",
+        "No collateral required"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": null,
+        "gender": ["Female", "All"],
+        "max_income": null,
+        "profession": ["Business Owner"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "pm-svaniidhi",
+      "name": "PM SVANidhi",
+      "ministry": "Ministry of Housing and Urban Affairs",
+      "description": "Micro-credit facility to street vendors to restart their businesses affected by COVID-19 lockdown.",
+      "benefits": [
+        "Initial working capital of ₹10,000",
+        "Interest subsidy on timely repayment",
+        "Digital transactions reward",
+        "No collateral required"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": null,
+        "gender": ["All"],
+        "max_income": 15000,
+        "profession": ["Business Owner"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "atal-pension",
+      "name": "Atal Pension Yojana (APY)",
+      "ministry": "Ministry of Finance",
+      "description": "Pension scheme for unorganized sector workers providing guaranteed minimum pension.",
+      "benefits": [
+        "Guaranteed minimum pension",
+        "Pension options: ₹1,000-5,000/month",
+        "Government contribution",
+        "Tax benefits"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": 40,
+        "gender": ["All"],
+        "max_income": null,
+        "profession": ["All"],
+        "state": ["All"]
+      }
+    },
+    {
+      "id": "pm-ujjwala",
+      "name": "Pradhan Mantri Ujjwala Yojana (PMUY)",
+      "ministry": "Ministry of Petroleum and Natural Gas",
+      "description": "Providing LPG connections to BPL households to replace traditional cooking fuels.",
+      "benefits": [
+        "Free LPG connection",
+        "Stove and first refill free",
+        "EMI option for stove cost",
+        "Safe cooking fuel"
+      ],
+      "eligibility": {
+        "age_min": 18,
+        "age_max": null,
+        "gender": ["Female"],
+        "max_income": 100000,
+        "profession": ["All"],
+        "state": ["All"]
+      }
+    }
+  ]
+}
