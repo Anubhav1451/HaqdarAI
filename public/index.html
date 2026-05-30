@@ -2847,30 +2847,41 @@ void main(void) {
 
         // Calculate match percentage based on user inputs and verified documents
         function calculateMatchPercentage(scheme) {
-            const userIncome = parseInt(document.getElementById('userIncome').value) || 0;
-            const userState = document.getElementById('userState').value;
-            const userCategory = document.getElementById('userCategory').value;
+            // Defensive check: ensure scheme object exists
+            if (!scheme || typeof scheme !== 'object') {
+                return 50;
+            }
+
+            const userIncome = parseInt(document.getElementById('userIncome')?.value) || 0;
+            const userState = document.getElementById('userState')?.value || '';
+            const userCategory = document.getElementById('userCategory')?.value || '';
             
             let matchScore = 50; // Base score
             
-            // Income match bonus
-            if (scheme.maxIncome >= userIncome) {
+            // Income match bonus - with safety check
+            const maxIncome = scheme.maxIncome ?? scheme.eligibility?.max_income ?? Infinity;
+            if (maxIncome >= userIncome) {
                 matchScore += 20;
             }
             
-            // State match bonus
-            if (scheme.state === 'All' || scheme.state === userState || userState === '' || userState === 'All') {
+            // State match bonus - with safety check
+            const schemeState = scheme.state ?? scheme.eligibility?.state ?? 'All';
+            const stateArray = Array.isArray(schemeState) ? schemeState : [schemeState];
+            if (stateArray.includes('All') || stateArray.includes(userState) || userState === '' || userState === 'All') {
                 matchScore += 15;
             }
             
-            // Category match bonus
-            if (scheme.category === userCategory || userCategory === '') {
+            // Category match bonus - with safety check
+            const schemeCategory = scheme.category ?? scheme.eligibility?.profession ?? 'All';
+            const categoryArray = Array.isArray(schemeCategory) ? schemeCategory : [schemeCategory];
+            if (categoryArray.includes(userCategory) || categoryArray.includes('All') || userCategory === '') {
                 matchScore += 15;
             }
             
-            // Document verification bonus
-            const verifiedDocCount = scheme.documentsRequired.filter(doc => verifiedDocuments.has(doc)).length;
-            const totalDocCount = scheme.documentsRequired.length;
+            // Document verification bonus - with safety check
+            const documentsRequired = Array.isArray(scheme.documentsRequired) ? scheme.documentsRequired : [];
+            const verifiedDocCount = documentsRequired.filter(doc => verifiedDocuments.has(doc)).length;
+            const totalDocCount = documentsRequired.length;
             if (totalDocCount > 0) {
                 const docBonus = (verifiedDocCount / totalDocCount) * 10;
                 matchScore += docBonus;
